@@ -18,9 +18,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	GoodsDetailMapper goodsDetailMapper;
 	
 	@Override
-	public void addGoodsDetail(String type, String name, String imageUrls, double price, double stock,
+	public void addGoodsDetail(String imageUrls, String type, String name, double price, double stock,
 			String specification, double reducedPrice, String detail) {
-		goodsDetailMapper.addGoodsDetail(type,name,imageUrls,price,stock,specification,reducedPrice,detail);
+		goodsDetailMapper.addGoodsDetail(imageUrls,type,name,price,stock,specification,reducedPrice,detail);
 	}
 
 	@Override
@@ -58,9 +58,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	}
 
 	@Override
-	public void updateGoodsDetail(int id, String type, String name, String imageUrls, double price, double stock,
+	public void updateGoodsDetail(int id, String imageUrls, String type, String name, double price, double stock,
 			String specification, double reducedPrice, String detail) {
-		goodsDetailMapper.updateGoodsDetail(id,type,name,imageUrls,price,stock,specification,reducedPrice,detail);
+		goodsDetailMapper.updateGoodsDetail(id,imageUrls,type,name,price,stock,specification,reducedPrice,detail);
 	}
 
 }

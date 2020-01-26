@@ -2,9 +2,9 @@ package com.FruitsVegetablesMallServer.pojo;
 
 public class GoodsDetail {
 	private int id;
+	private String imageUrls;
 	private String type;
 	private String name;
-	private String imageUrls;
 	private Double price;
 	private Double stock;
 	private String specification;
@@ -17,6 +17,12 @@ public class GoodsDetail {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public String getImageUrls() {
+		return imageUrls;
+	}
+	public void setImageUrls(String imageUrls) {
+		this.imageUrls = imageUrls;
+	}
 	public String getType() {
 		return type;
 	}
@@ -28,12 +34,6 @@ public class GoodsDetail {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getImageUrls() {
-		return imageUrls;
-	}
-	public void setImageUrls(String imageUrls) {
-		this.imageUrls = imageUrls;
 	}
 	public Double getPrice() {
 		return price;

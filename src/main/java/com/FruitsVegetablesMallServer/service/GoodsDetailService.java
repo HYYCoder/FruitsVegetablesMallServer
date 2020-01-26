@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 
 public interface GoodsDetailService {
 	
-	void addGoodsDetail(String type,String name,String imageUrls,double price,
+	void addGoodsDetail(String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail);
 	
 	void deleteGoodsDetail(int id);
@@ -18,6 +18,6 @@ public interface GoodsDetailService {
 	
 	GoodsDetail getGoodsDetail(int id);
 	
-	void updateGoodsDetail(int id,String type,String name,String imageUrls,double price,
+	void updateGoodsDetail(int id,String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail);
 }

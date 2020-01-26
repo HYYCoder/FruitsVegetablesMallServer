@@ -14,8 +14,8 @@ import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
 @Mapper
 public interface GoodsDetailMapper {
 	
-	@Insert("insert into goodsdetail (type,name,imageUrls,price,stock,specification,reducedPrice,detail) values(#{type},#{name},#{imageUrls},#{price},#{stock},#{specification},#{reducedPrice},#{detail})")
-	void addGoodsDetail(String type,String name,String imageUrls,double price,
+	@Insert("insert into goodsdetail (imageUrls,type,name,price,stock,specification,reducedPrice,detail) values(#{imageUrls},#{type},#{name},#{price},#{stock},#{specification},#{reducedPrice},#{detail})")
+	void addGoodsDetail(String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail);
 	
 	@Delete("delete from goodsdetail where id=#{id}")
@@ -33,7 +33,7 @@ public interface GoodsDetailMapper {
 	@Select("select * from goodsdetail where id=#{goodsId}")
 	GoodsDetail getGoodsDetail(int goodsId);
 	
-	@Update("Update goodsdetail set type = #{type},name = #{name},imageUrls = #{imageUrls},price = #{price},stock = #{stock},specification = #{specification},reducedPrice = #{reducedPrice},detail = #{detail} where id = #{id}")
-	void updateGoodsDetail(int id,String type,String name,String imageUrls,double price,
+	@Update("Update goodsdetail set imageUrls = #{imageUrls},type = #{type},name = #{name},price = #{price},stock = #{stock},specification = #{specification},reducedPrice = #{reducedPrice},detail = #{detail} where id = #{id}")
+	void updateGoodsDetail(int id,String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail);
 }

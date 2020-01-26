@@ -8,6 +8,6 @@ import com.FruitsVegetablesMallServer.pojo.AdminList;
 @Mapper
 public interface AdminListMapper {
 	
-	@Select("select * from adminlist where userName=#{userName} and password=#{password}")
-	AdminList getAdminList(String userName,String password);
+	@Select("select * from adminlist where id=#{id}")
+	AdminList getAdmin(int id);
 }

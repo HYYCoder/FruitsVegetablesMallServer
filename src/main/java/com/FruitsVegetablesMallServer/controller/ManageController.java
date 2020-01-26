@@ -1,29 +1,50 @@
 package com.FruitsVegetablesMallServer.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.FruitsVegetablesMallServer.pojo.AccountLogin;
 import com.FruitsVegetablesMallServer.pojo.AdminList;
+import com.FruitsVegetablesMallServer.service.AccountLoginService;
 import com.FruitsVegetablesMallServer.service.AdminListService;
 import com.FruitsVegetablesMallServer.service.GoodsDetailService;
+import com.FruitsVegetablesMallServer.util.LoginRequired;
+import com.FruitsVegetablesMallServer.util.TokenUtil;
 
 @RestController
 public class ManageController {
 	
+	@Autowired
+	private AccountLoginService accountLoginService;
 	@Autowired
 	private AdminListService adminListService;
 	@Autowired
 	private GoodsDetailService goodsDetailService;
 	
 	@RequestMapping(value = "/admin/login",method = RequestMethod.POST)
-	public AdminList adminLogin(@RequestBody AdminList adminList) {
-		System.out.println(adminList.getUserName());
-		System.out.println(adminList.getPassword());
-		return adminListService.getAdminList(adminList.getUserName(), adminList.getPassword());
+	public Map<String, String> accountLogin(@RequestBody AccountLogin accountLogin) {
+		AccountLogin isAccountLogin = accountLoginService.getAccountLogin(accountLogin.getUserName(), accountLogin.getPassword());
+		if(isAccountLogin.getUserName() !=null 
+				&& isAccountLogin.getPassword() !=null) {
+			Map<String, String> token = new HashMap<String,String>();
+			token.put("id",isAccountLogin.getId()+"");
+			token.put("token",TokenUtil.createJwtToken(accountLogin.getUserName(),"dtb"));
+			return token;
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "/admin/{id}",method = RequestMethod.GET)
+	@LoginRequired
+	public AdminList getAdmin(@PathVariable(value="id",required = true) Integer id) {
+		return adminListService.getAdmin(id);
 	}
 	
 	@RequestMapping(value = "/add/goods",method = RequestMethod.POST)

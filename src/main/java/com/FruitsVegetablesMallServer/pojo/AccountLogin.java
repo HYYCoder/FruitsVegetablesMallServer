@@ -1,12 +1,11 @@
 package com.FruitsVegetablesMallServer.pojo;
 
-public class AdminList {
+public class AccountLogin {
+	
 	private int id;
 	private String userName;
+	private String password;
 	private String type;
-	private String avatar;
-	private String mobile;
-	private String name;
 	
 	public int getId() {
 		return id;
@@ -20,30 +19,17 @@ public class AdminList {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getType() {
 		return type;
 	}
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getAvatar() {
-		return avatar;
-	}
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
-	public String getMobile() {
-		return mobile;
-	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	
 }

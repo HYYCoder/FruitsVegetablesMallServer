@@ -12,10 +12,14 @@ public class AdminListServiceImpl implements AdminListService{
 
 	@Autowired
 	AdminListMapper adminListMapper;
-	
-	@Override
-	public AdminList getAdminList(String userName, String password) {
-		return adminListMapper.getAdminList(userName, password);
-	}
 
+	@Override
+	public AdminList getAdmin(int id) {
+		return adminListMapper.getAdmin(id);
+	}
+	
+//	@Override
+//	public AdminList getAdmin(int id) {
+//		return adminListMapper.getAdmin(id);
+//	}
 }

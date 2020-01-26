@@ -3,6 +3,8 @@ package com.FruitsVegetablesMallServer.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,8 @@ import com.FruitsVegetablesMallServer.service.GoodsDetailService;
 import com.FruitsVegetablesMallServer.util.LoginRequired;
 import com.FruitsVegetablesMallServer.util.TokenUtil;
 
+import io.jsonwebtoken.Claims;
+
 @RestController
 public class ManageController {
 	
@@ -27,6 +31,8 @@ public class ManageController {
 	private AdminListService adminListService;
 	@Autowired
 	private GoodsDetailService goodsDetailService;
+	@Autowired
+	private HttpServletRequest request;
 	
 	@RequestMapping(value = "/admin/login",method = RequestMethod.POST)
 	public Map<String, String> accountLogin(@RequestBody AccountLogin accountLogin) {
@@ -44,7 +50,12 @@ public class ManageController {
 	@RequestMapping(value = "/admin/{id}",method = RequestMethod.GET)
 	@LoginRequired
 	public AdminList getAdmin(@PathVariable(value="id",required = true) Integer id) {
-		return adminListService.getAdmin(id);
+		try {
+			Claims claims = TokenUtil.parseJWT(request.getHeader("Authorization"));
+			return adminListService.getAdmin(id);
+		} catch (Exception e) {
+			throw new RuntimeException("401");
+		}
 	}
 	
 	@RequestMapping(value = "/add/goods",method = RequestMethod.POST)

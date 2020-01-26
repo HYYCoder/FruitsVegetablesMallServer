@@ -14,11 +14,11 @@ public class TokenUtil {
     /**
      * 签名秘钥,可以换成 秘钥 注入
      */
-    public static final String SECRET = "DaTiBao";//注意:本参数需要长一点，不然后面剪切的时候很可能长度为0，就会报错
+    public static final String SECRET = "FruitsVegetablesMall";//注意:本参数需要长一点，不然后面剪切的时候很可能长度为0，就会报错
     /**
      * 签发地
      */
-    public static final String issuer  = "dtb.com";
+    public static final String issuer  = "FruitsVegetablesMallServer.com";
     /**
      * 过期时间
      */

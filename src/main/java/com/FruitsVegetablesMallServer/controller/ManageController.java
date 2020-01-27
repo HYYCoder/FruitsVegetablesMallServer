@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,10 +16,9 @@ import com.FruitsVegetablesMallServer.pojo.AdminList;
 import com.FruitsVegetablesMallServer.service.AccountLoginService;
 import com.FruitsVegetablesMallServer.service.AdminListService;
 import com.FruitsVegetablesMallServer.service.GoodsDetailService;
-import com.FruitsVegetablesMallServer.util.LoginRequired;
+import com.FruitsVegetablesMallServer.util.TokenRequired;
 import com.FruitsVegetablesMallServer.util.TokenUtil;
 
-import io.jsonwebtoken.Claims;
 
 @RestController
 public class ManageController {
@@ -32,7 +30,7 @@ public class ManageController {
 	@Autowired
 	private GoodsDetailService goodsDetailService;
 	@Autowired
-	private HttpServletRequest request;
+	private HttpServletRequest httpServletRequest;
 	
 	@RequestMapping(value = "/admin/login",method = RequestMethod.POST)
 	public Map<String, String> accountLogin(@RequestBody AccountLogin accountLogin) {
@@ -41,21 +39,16 @@ public class ManageController {
 				&& isAccountLogin.getPassword() !=null) {
 			Map<String, String> token = new HashMap<String,String>();
 			token.put("id",isAccountLogin.getId()+"");
-			token.put("token",TokenUtil.createJwtToken(accountLogin.getUserName(),"dtb"));
+			token.put("token",TokenUtil.createJwtToken(accountLogin.getUserName(),"FruitsVegetablesMall"));
 			return token;
 		}
 		return null;
 	}
 	
-	@RequestMapping(value = "/admin/{id}",method = RequestMethod.GET)
-	@LoginRequired
-	public AdminList getAdmin(@PathVariable(value="id",required = true) Integer id) {
-		try {
-			Claims claims = TokenUtil.parseJWT(request.getHeader("Authorization"));
-			return adminListService.getAdmin(id);
-		} catch (Exception e) {
-			throw new RuntimeException("401");
-		}
+	@RequestMapping(value = "/index",method = RequestMethod.GET)
+	@TokenRequired
+	public AdminList getAdmin() {
+		return adminListService.getAdmin(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
 	}
 	
 	@RequestMapping(value = "/add/goods",method = RequestMethod.POST)

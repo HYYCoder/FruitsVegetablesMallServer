@@ -18,7 +18,7 @@ public class TokenUtil {
     /**
      * 签发地
      */
-    public static final String issuer  = "FruitsVegetablesMallServer.com";
+    public static final String issuer  = "FruitsVegetablesMall.com";
     /**
      * 过期时间
      */

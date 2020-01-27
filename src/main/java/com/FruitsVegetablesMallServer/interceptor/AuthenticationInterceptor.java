@@ -46,7 +46,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 String userName;
                 try {
                 	userName = TokenUtil.parseJWT(token).getId();
-                	System.out.println(userName);
                 } catch (Exception j) {
                     throw new RuntimeException("401");
                 }

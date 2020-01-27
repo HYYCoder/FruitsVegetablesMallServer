@@ -45,12 +45,13 @@ public class ManageController {
 		return null;
 	}
 	
-	@RequestMapping(value = "/index",method = RequestMethod.GET)
 	@TokenRequired
+	@RequestMapping(value = "/index",method = RequestMethod.GET)
 	public AdminList getAdmin() {
 		return adminListService.getAdmin(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
 	}
 	
+	@TokenRequired
 	@RequestMapping(value = "/add/goods",method = RequestMethod.POST)
 	public String addGoodsDetail(String imageUrls,String type,String name,double price,double stock,String specification,double reducedPrice,String detail) {
 		goodsDetailService.addGoodsDetail(imageUrls, type, name, price, stock, specification, reducedPrice, detail);

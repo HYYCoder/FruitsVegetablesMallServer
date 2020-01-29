@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.FruitsVegetablesMallServer.mapper.GoodsDetailMapper">
+ 
+ 	<insert id="addGoodsDetail" parameterType="com.FruitsVegetablesMallServer.pojo.GoodsDetail" keyProperty="key" useGeneratedKeys="true">
+        insert into goodsdetail (imageUrls,type,name,price,stock,specification,reducedPrice,detail) values(#{imageUrls},#{type},#{name},#{price},#{stock},#{specification},#{reducedPrice},#{detail})
+    </insert>
+ 
+ 	<delete id="deleteGoodsDetail" parameterType="int">
+		delete from goodsdetail where key=#{key}
+	</delete>
+ 
+ 	<select id="queryAllGoodsDetail" resultType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">
+        select * from goodsdetail 
+        <where>
+		    <if test="type != ''">
+		         and type = #{type}
+		  	</if>
+		  	<if test="name != ''">
+		         or name = #{name}
+		  	</if>
+		  	<if test="price >= 0">
+		         or price = #{price}
+		  	</if>
+		  	<if test="stock >= 0">
+		         or stock = #{stock}
+		  	</if>
+		  	<if test="reducedPrice >= 0">
+		         or reducedPrice = #{reducedPrice}
+		  	</if>
+		</where>
+    </select>
+    
+    <select id="queryGoodsDetail" resultType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">
+        select * from goodsdetail where key=#{key}
+    </select>
+ 
+ 	<update id="updateGoodsDetail" parameterType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">
+		Update goodsdetail set imageUrls = #{imageUrls},type = #{type},name = #{name},price = #{price},stock = #{stock},specification = #{specification},reducedPrice = #{reducedPrice},detail = #{detail} where key = #{key}
+	</update>
+ 
+</mapper>

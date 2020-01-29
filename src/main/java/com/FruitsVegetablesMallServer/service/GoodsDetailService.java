@@ -8,16 +8,13 @@ public interface GoodsDetailService {
 	void addGoodsDetail(String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail);
 	
-	void deleteGoodsDetail(int id);
+	void deleteGoodsDetail(int key);
 	
-	PageInfo<GoodsDetail> getAllGoodsDetail(int pageNo, int pageSize);
+	PageInfo<GoodsDetail> queryAllGoodsDetail(String type,String name,double price,
+			double stock,double reducedPrice,int current, int pageSize);
 	
-	PageInfo<GoodsDetail> getTypeGoodsDetail(int pageNo, int pageSize,String type);
+	GoodsDetail queryGoodsDetail(int key);
 	
-	PageInfo<GoodsDetail> getNameGoodsDetail(int pageNo, int pageSize,String name);
-	
-	GoodsDetail getGoodsDetail(int id);
-	
-	void updateGoodsDetail(int id,String imageUrls,String type,String name,double price,
+	void updateGoodsDetail(int key,String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail);
 }

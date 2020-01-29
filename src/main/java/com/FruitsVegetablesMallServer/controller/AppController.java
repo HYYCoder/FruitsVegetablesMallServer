@@ -18,23 +18,15 @@ public class AppController {
 	private GoodsDetailService goodsDetailService;
 	
 	@RequestMapping(value = "/goods",method = RequestMethod.GET)
-	public PageInfo<GoodsDetail> getAllGoodsDetail(@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="16")int pageSize) {
-		return goodsDetailService.getAllGoodsDetail(pageNum,pageSize);
-	}
-	
-	@RequestMapping(value = "/goods/type",method = RequestMethod.GET)
-	public PageInfo<GoodsDetail> getTypeGoodsDetail(@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="16")int pageSize,String type) {
-		return goodsDetailService.getTypeGoodsDetail(pageNum,pageSize,type);
-	}
-	
-	@RequestMapping(value = "/goods/name",method = RequestMethod.GET)
-	public PageInfo<GoodsDetail> getNameGoodsDetail(@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="16")int pageSize,String name) {
-		return goodsDetailService.getNameGoodsDetail(pageNum,pageSize,name);
+	public PageInfo<GoodsDetail> queryAllGoodsDetail(String type,String name,double price,
+			double stock,String specification,double reducedPrice,@RequestParam(value="currentPage",defaultValue="1")int currentPage, @RequestParam(value="pageSize",defaultValue="16")int pageSize) {
+		return goodsDetailService.queryAllGoodsDetail(type,name,price,
+				stock,reducedPrice,currentPage,pageSize);
 	}
 	
 	@RequestMapping(value = "/goods/{id}",method = RequestMethod.GET)
-	public GoodsDetail getGoodsDetail(@PathVariable(value="id") Integer id) {
-		return goodsDetailService.getGoodsDetail(id);
+	public GoodsDetail queryGoodsDetail(@PathVariable(value="id") Integer id) {
+		return goodsDetailService.queryGoodsDetail(id);
 	}
 	
 }

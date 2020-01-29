@@ -14,8 +14,8 @@ public class AccountLoginServiceImpl implements AccountLoginService{
 	AccountLoginMapper accountLoginMapper;
 	
 	@Override
-	public AccountLogin getAccountLogin(String userName, String password) {
-		return accountLoginMapper.getAccountLogin(userName, password);
+	public AccountLogin queryAccountLogin(String userName, String password) {
+		return accountLoginMapper.queryAccountLogin(userName, password);
 	}
 
 	

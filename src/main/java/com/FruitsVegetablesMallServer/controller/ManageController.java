@@ -43,7 +43,7 @@ public class ManageController {
 	
 	@RequestMapping(value = "/admin/login",method = RequestMethod.POST)
 	public Map<String, String> accountLogin(@RequestBody AccountLogin accountLogin) {
-		AccountLogin isAccountLogin = accountLoginService.getAccountLogin(accountLogin.getUserName(), accountLogin.getPassword());
+		AccountLogin isAccountLogin = accountLoginService.queryAccountLogin(accountLogin.getUserName(), accountLogin.getPassword());
 		if(isAccountLogin.getUserName() !=null 
 				&& isAccountLogin.getPassword() !=null) {
 			Map<String, String> token = new HashMap<String,String>();
@@ -57,22 +57,9 @@ public class ManageController {
 	@TokenRequired
 	@RequestMapping(value = "/manage",method = RequestMethod.GET)
 	public AdminList getAdmin() {
-		return adminListService.getAdmin(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
+		return adminListService.queryAdmin(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
 	}
-	
-	@TokenRequired
-	@RequestMapping(value = "/manage/goods",method = RequestMethod.GET)
-	public Map<String,Object> getAllGoodsDetail(@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="16")int pageSize) {
-		PageInfo<GoodsDetail> pageInfo= goodsDetailService.getAllGoodsDetail(pageNum,pageSize);
-		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("data", pageInfo.getList());
-		data.put("total", pageInfo.getTotal());
-		data.put("success", true);
-		data.put("pageSize", pageInfo.getPageSize());
-		data.put("current", pageInfo.getPageNum());
-		return data;
-	}
-	
+
 	@TokenRequired
 	@RequestMapping(value = "/manage/add/goods",method = RequestMethod.POST)
 	public String addGoodsDetail(String imageUrls,String type,String name,double price,double stock,String specification,double reducedPrice,String detail) {
@@ -116,9 +103,27 @@ public class ManageController {
 	}
 	
 	@TokenRequired
-	@RequestMapping(value = "/manage/delete/goods/{id}",method = RequestMethod.POST)
-	public String deleteGoodsDetail(@PathVariable(value="id") Integer id) {
-		goodsDetailService.deleteGoodsDetail(id);
+	@RequestMapping(value = "/manage/delete/goods/{key}",method = RequestMethod.DELETE)
+	public String deleteGoodsDetail(@PathVariable(value="key") Integer key) {
+		goodsDetailService.deleteGoodsDetail(key);
 		return "OK";
+	}
+	
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/goods",method = RequestMethod.GET)
+	public Map<String,Object> queryAllGoodsDetail(@RequestParam(value="type") String type,@RequestParam(value="name") String name
+			,@RequestParam(value="price") Double price,@RequestParam(value="stock") Double stock
+			,@RequestParam(value="reducedPrice") Double reducedPrice,@RequestParam(value="current") int current
+			,@RequestParam(value="pageSize") int pageSize) {
+		PageInfo<GoodsDetail> pageInfo= goodsDetailService.queryAllGoodsDetail(type,name,price==null?-1:price,
+				stock==null?-1:stock,reducedPrice==null?-1:reducedPrice,current,pageSize);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("data", pageInfo.getList());
+		data.put("total", pageInfo.getTotal());
+		data.put("success", true);
+		data.put("pageSize", pageInfo.getPageSize());
+		data.put("current", pageInfo.getPageNum());
+		return data;
 	}
 }

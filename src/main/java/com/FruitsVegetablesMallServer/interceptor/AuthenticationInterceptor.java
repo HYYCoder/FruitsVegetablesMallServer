@@ -40,7 +40,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             if (tokenRequired.required()) {
                 // 执行认证
                 if (token == null) {
-                    throw new RuntimeException("无token，请重新登录");
+                    throw new RuntimeException("无效token");
                 }
                 // 验证token
                 String userName;
@@ -49,7 +49,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 } catch (Exception j) {
                     throw new RuntimeException("401");
                 }
-                AdminList adminList = adminListService.getAdmin(userName);
+                AdminList adminList = adminListService.queryAdmin(userName);
                 if (adminList == null) {
                     throw new RuntimeException("用户不存在，请重新登录");
                 }

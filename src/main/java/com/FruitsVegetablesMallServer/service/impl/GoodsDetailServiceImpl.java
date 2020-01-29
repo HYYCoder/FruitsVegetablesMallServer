@@ -24,43 +24,30 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	}
 
 	@Override
-	public void deleteGoodsDetail(int id) {
-		goodsDetailMapper.deleteGoodsDetail(id);
+	public void deleteGoodsDetail(int key) {
+		goodsDetailMapper.deleteGoodsDetail(key);
 	}
 
 	@Override
-	public PageInfo<GoodsDetail> getAllGoodsDetail(int pageNo, int pageSize) {
-		PageHelper.startPage(pageNo,pageSize);
-		List<GoodsDetail> list=goodsDetailMapper.getAllGoodsDetail();
+	public PageInfo<GoodsDetail> queryAllGoodsDetail(String type,String name,double price,
+			double stock,double reducedPrice,int current, int pageSize) {
+		PageHelper.startPage(current,pageSize);
+		List<GoodsDetail> list=goodsDetailMapper.queryAllGoodsDetail(type,name,price,
+				stock,reducedPrice);
 		PageInfo<GoodsDetail> page = new PageInfo<GoodsDetail>(list);
 		return page;
 	}
 
 	@Override
-	public PageInfo<GoodsDetail> getTypeGoodsDetail(int pageNo, int pageSize, String type) {
-		PageHelper.startPage(pageNo,pageSize);
-		List<GoodsDetail> list=goodsDetailMapper.getTypeGoodsDetail(type);
-		PageInfo<GoodsDetail> page = new PageInfo<GoodsDetail>(list);
-		return page;
+	public GoodsDetail queryGoodsDetail(int goodsId) {
+		return goodsDetailMapper.queryGoodsDetail(goodsId);
 	}
 
 	@Override
-	public PageInfo<GoodsDetail> getNameGoodsDetail(int pageNo, int pageSize, String name) {
-		PageHelper.startPage(pageNo,pageSize);
-		List<GoodsDetail> list=goodsDetailMapper.getNameGoodsDetail(name);
-		PageInfo<GoodsDetail> page = new PageInfo<GoodsDetail>(list);
-		return page;
-	}
-
-	@Override
-	public GoodsDetail getGoodsDetail(int goodsId) {
-		return goodsDetailMapper.getGoodsDetail(goodsId);
-	}
-
-	@Override
-	public void updateGoodsDetail(int id, String imageUrls, String type, String name, double price, double stock,
-			String specification, double reducedPrice, String detail) {
-		goodsDetailMapper.updateGoodsDetail(id,imageUrls,type,name,price,stock,specification,reducedPrice,detail);
+	public void updateGoodsDetail(int key,String imageUrls,String type,String name,double price,
+			double stock,String specification,double reducedPrice,String detail) {
+		goodsDetailMapper.updateGoodsDetail(key,imageUrls,type,name,price,
+				stock,specification,reducedPrice,detail);
 	}
 
 }

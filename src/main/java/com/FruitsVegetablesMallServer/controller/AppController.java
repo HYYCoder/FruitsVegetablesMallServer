@@ -1,8 +1,5 @@
 package com.FruitsVegetablesMallServer.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,15 +18,8 @@ public class AppController {
 	private GoodsDetailService goodsDetailService;
 	
 	@RequestMapping(value = "/goods",method = RequestMethod.GET)
-	public Map<String,Object> getAllGoodsDetail(@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="16")int pageSize) {
-		PageInfo<GoodsDetail> pageInfo= goodsDetailService.getAllGoodsDetail(pageNum,pageSize);
-		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("data", pageInfo.getList());
-		data.put("total", pageInfo.getTotal());
-		data.put("success", true);
-		data.put("pageSize", pageInfo.getPageSize());
-		data.put("current", pageInfo.getPageNum());
-		return data;
+	public PageInfo<GoodsDetail> getAllGoodsDetail(@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="16")int pageSize) {
+		return goodsDetailService.getAllGoodsDetail(pageNum,pageSize);
 	}
 	
 	@RequestMapping(value = "/goods/type",method = RequestMethod.GET)
@@ -42,9 +32,9 @@ public class AppController {
 		return goodsDetailService.getNameGoodsDetail(pageNum,pageSize,name);
 	}
 	
-	@RequestMapping(value = "/goods/{goodsId}",method = RequestMethod.GET)
-	public GoodsDetail getGoodsDetail(@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="16")int pageSize,@PathVariable(value="goodsId") Integer goodsId) {
-		return goodsDetailService.getGoodsDetail(goodsId);
+	@RequestMapping(value = "/goods/{id}",method = RequestMethod.GET)
+	public GoodsDetail getGoodsDetail(@PathVariable(value="id") Integer id) {
+		return goodsDetailService.getGoodsDetail(id);
 	}
 	
 }

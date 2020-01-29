@@ -1,7 +1,7 @@
 package com.FruitsVegetablesMallServer.pojo;
 
 public class GoodsDetail {
-	private int id;
+	private int key;
 	private String imageUrls;
 	private String type;
 	private String name;
@@ -11,11 +11,11 @@ public class GoodsDetail {
 	private Double reducedPrice;
 	private String detail;
 	
-	public int getId() {
-		return id;
+	public int getKey() {
+		return key;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setKey(int key) {
+		this.key = key;
 	}
 	public String getImageUrls() {
 		return imageUrls;

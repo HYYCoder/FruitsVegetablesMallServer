@@ -8,13 +8,13 @@ public interface GoodsDetailService {
 	void addGoodsDetail(String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail);
 	
-	void deleteGoodsDetail(int key);
+	void deleteGoodsDetail(int id);
 	
 	PageInfo<GoodsDetail> queryAllGoodsDetail(String type,String name,double price,
 			double stock,double reducedPrice,int current, int pageSize);
 	
-	GoodsDetail queryGoodsDetail(int key);
+	GoodsDetail queryGoodsDetail(int id);
 	
-	void updateGoodsDetail(int key,String imageUrls,String type,String name,double price,
+	void updateGoodsDetail(int id,String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail);
 }

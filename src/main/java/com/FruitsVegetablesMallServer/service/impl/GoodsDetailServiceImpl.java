@@ -24,8 +24,8 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	}
 
 	@Override
-	public void deleteGoodsDetail(int key) {
-		goodsDetailMapper.deleteGoodsDetail(key);
+	public void deleteGoodsDetail(int id) {
+		goodsDetailMapper.deleteGoodsDetail(id);
 	}
 
 	@Override
@@ -44,9 +44,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	}
 
 	@Override
-	public void updateGoodsDetail(int key,String imageUrls,String type,String name,double price,
+	public void updateGoodsDetail(int id,String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail) {
-		goodsDetailMapper.updateGoodsDetail(key,imageUrls,type,name,price,
+		goodsDetailMapper.updateGoodsDetail(id,imageUrls,type,name,price,
 				stock,specification,reducedPrice,detail);
 	}
 

@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.FruitsVegetablesMallServer.mapper.GoodsDetailMapper">
  
- 	<insert id="addGoodsDetail" parameterType="com.FruitsVegetablesMallServer.pojo.GoodsDetail" keyProperty="key" useGeneratedKeys="true">
+ 	<insert id="addGoodsDetail" parameterType="com.FruitsVegetablesMallServer.pojo.GoodsDetail" >
         insert into goodsdetail (imageUrls,type,name,price,stock,specification,reducedPrice,detail) values(#{imageUrls},#{type},#{name},#{price},#{stock},#{specification},#{reducedPrice},#{detail})
     </insert>
  
- 	<delete id="deleteGoodsDetail" parameterType="int">
-		delete from goodsdetail where key=#{key}
+ 	<delete id="deleteGoodsDetail" parameterType="java.lang.Integer">
+		delete from goodsdetail where id = #{id}
 	</delete>
  
  	<select id="queryAllGoodsDetail" resultType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">
@@ -32,11 +32,11 @@
     </select>
     
     <select id="queryGoodsDetail" resultType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">
-        select * from goodsdetail where key=#{key}
+        select * from goodsdetail where id=#{id}
     </select>
  
  	<update id="updateGoodsDetail" parameterType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">
-		Update goodsdetail set imageUrls = #{imageUrls},type = #{type},name = #{name},price = #{price},stock = #{stock},specification = #{specification},reducedPrice = #{reducedPrice},detail = #{detail} where key = #{key}
+		Update goodsdetail set imageUrls = #{imageUrls},type = #{type},name = #{name},price = #{price},stock = #{stock},specification = #{specification},reducedPrice = #{reducedPrice},detail = #{detail} where id = #{id}
 	</update>
  
 </mapper>

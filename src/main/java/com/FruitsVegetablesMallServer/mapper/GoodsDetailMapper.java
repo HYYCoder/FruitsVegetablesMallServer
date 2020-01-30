@@ -2,12 +2,7 @@ package com.FruitsVegetablesMallServer.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
 
@@ -17,13 +12,13 @@ public interface GoodsDetailMapper {
 	void addGoodsDetail(String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail);
 	
-	String deleteGoodsDetail(int key);
+	void deleteGoodsDetail(int id);
 	
 	List<GoodsDetail> queryAllGoodsDetail(String type,String name,double price,
 			double stock,double reducedPrice);
 	
-	GoodsDetail queryGoodsDetail(int key);
+	GoodsDetail queryGoodsDetail(int id);
 	
-	void updateGoodsDetail(int key,String imageUrls,String type,String name,double price,
+	void updateGoodsDetail(int id,String imageUrls,String type,String name,double price,
 			double stock,String specification,double reducedPrice,String detail);
 }

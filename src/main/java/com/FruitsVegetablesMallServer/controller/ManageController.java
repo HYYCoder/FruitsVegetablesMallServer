@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.FruitsVegetablesMallServer.pojo.AccountLogin;
 import com.FruitsVegetablesMallServer.pojo.AdminList;
+import com.FruitsVegetablesMallServer.pojo.ChangeGoods;
 import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
 import com.FruitsVegetablesMallServer.service.AccountLoginService;
 import com.FruitsVegetablesMallServer.service.AdminListService;
@@ -62,8 +63,9 @@ public class ManageController {
 
 	@TokenRequired
 	@RequestMapping(value = "/manage/add/goods",method = RequestMethod.POST)
-	public String addGoodsDetail(String imageUrls,String type,String name,double price,double stock,String specification,double reducedPrice,String detail) {
-		goodsDetailService.addGoodsDetail(imageUrls, type, name, price, stock, specification, reducedPrice, detail);
+	public String addGoodsDetail(@RequestBody ChangeGoods changeGoods) {
+		goodsDetailService.addGoodsDetail(changeGoods.getImageUrls(), changeGoods.getType(), changeGoods.getName(), changeGoods.getPrice(),
+				changeGoods.getStock(), changeGoods.getSpecification(), changeGoods.getReducedPrice(), changeGoods.getDetail());
 		return "OK";
 	}
 	
@@ -103,9 +105,9 @@ public class ManageController {
 	}
 	
 	@TokenRequired
-	@RequestMapping(value = "/manage/delete/goods/{key}",method = RequestMethod.DELETE)
-	public String deleteGoodsDetail(@PathVariable(value="key") Integer key) {
-		goodsDetailService.deleteGoodsDetail(key);
+	@RequestMapping(value = "/manage/delete/goods/{id}",method = RequestMethod.DELETE)
+	public String deleteGoodsDetail(@PathVariable(value="id") Integer id) {
+		goodsDetailService.deleteGoodsDetail(id);
 		return "OK";
 	}
 	
@@ -125,5 +127,14 @@ public class ManageController {
 		data.put("pageSize", pageInfo.getPageSize());
 		data.put("current", pageInfo.getPageNum());
 		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/update/goods",method = RequestMethod.PUT)
+	public String updateGoodsDetail(@RequestBody GoodsDetail goodsDetail) {
+		goodsDetailService.updateGoodsDetail(goodsDetail.getId(), goodsDetail.getImageUrls(), goodsDetail.getType()
+				, goodsDetail.getName(), goodsDetail.getPrice(), goodsDetail.getStock(), goodsDetail.getSpecification()
+				, goodsDetail.getReducedPrice(), goodsDetail.getDetail());
+		return "OK";
 	}
 }

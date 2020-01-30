@@ -1,7 +1,6 @@
 package com.FruitsVegetablesMallServer.pojo;
 
-public class GoodsDetail {
-	private int id;
+public class ChangeGoods {
 	private String imageUrls;
 	private String type;
 	private String name;
@@ -11,13 +10,6 @@ public class GoodsDetail {
 	private Double reducedPrice;
 	private String detail;
 	
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getImageUrls() {
 		return imageUrls;
 	}

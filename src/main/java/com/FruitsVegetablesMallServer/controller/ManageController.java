@@ -70,10 +70,10 @@ public class ManageController {
 	}
 	
 	// 添加商品图片
-	@RequestMapping(value = "/manage/add/goods/image", method = RequestMethod.POST)
+	@RequestMapping(value = "/manage/upload/image", method = RequestMethod.POST)
 	@TokenRequired
 	@ResponseBody
-	public Map<String, Object> upload(@RequestParam("image") MultipartFile file)
+	public String uploadImage(@RequestParam("image") MultipartFile file)
 			throws IOException {
 
 		// 如果文件内容不为空，则写入上传路径
@@ -93,15 +93,10 @@ public class ManageController {
 			// 将上传文件保存到一个目标文档中
 			File file1 = new File(path + File.separator + filename);
 			file.transferTo(file1);
-			Map<String, Object> res = new HashMap<>();
-			// 返回的是一个url对象
-			res.put("url", filename);
-			return res;
-
+			return filename;
 		} else {
 			return null;
 		}
-
 	}
 	
 	@TokenRequired

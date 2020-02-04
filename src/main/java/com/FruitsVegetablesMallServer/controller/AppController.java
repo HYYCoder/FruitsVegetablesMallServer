@@ -23,7 +23,7 @@ public class AppController {
 	@RequestMapping(value = "/goods",method = RequestMethod.GET)
 	public Map<String,Object> queryAllGoodsDetail() {
 		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("code", 200);
+		data.put("code", 0);
 		data.put("message", "OK");
 		data.put("data", goodsDetailService.queryAllGoodsDetail("","",-1,-1,-1,0,10));
 		return data;

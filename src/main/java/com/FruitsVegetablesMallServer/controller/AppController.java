@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
 import com.FruitsVegetablesMallServer.service.GoodsDetailService;
-import com.github.pagehelper.PageInfo;
 
 @RestController
 public class AppController {
@@ -21,11 +20,15 @@ public class AppController {
 	private GoodsDetailService goodsDetailService;
 	
 	@RequestMapping(value = "/goods",method = RequestMethod.GET)
-	public Map<String,Object> queryAllGoodsDetail() {
+	public Map<String,Object> queryAllGoodsDetail(@RequestParam(value="type") String type,@RequestParam(value="name") String name
+			,@RequestParam(value="price") Double price,@RequestParam(value="stock") Double stock
+			,@RequestParam(value="reducedPrice") Double reducedPrice,@RequestParam(value="current") int current
+			,@RequestParam(value="pageSize") int pageSize) {
 		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("code", 0);
+		data.put("code", "0");
 		data.put("message", "OK");
-		data.put("data", goodsDetailService.queryAllGoodsDetail("","",-1,-1,-1,0,10));
+		data.put("data", goodsDetailService.queryAllGoodsDetail(type,name,price==null?-1:price,
+				stock==null?-1:stock,reducedPrice==null?-1:reducedPrice,current,pageSize).getList());
 		return data;
 	}
 	

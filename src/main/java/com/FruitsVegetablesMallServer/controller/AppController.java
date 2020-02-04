@@ -28,7 +28,7 @@ public class AppController {
 		data.put("code", "0");
 		data.put("message", "OK");
 		data.put("data", goodsDetailService.queryAllGoodsDetail(type,name,price==null?-1:price,
-				stock==null?-1:stock,reducedPrice==null?-1:reducedPrice,current,pageSize).getList());
+				stock==null?-1:stock,reducedPrice==null?-1:reducedPrice,current,pageSize));
 		return data;
 	}
 	

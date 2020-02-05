@@ -11,7 +11,7 @@ import com.FruitsVegetablesMallServer.service.AdminListService;
 public class AdminListServiceImpl implements AdminListService{
 
 	@Autowired
-	AdminListMapper adminListMapper;
+	private AdminListMapper adminListMapper;
 
 	@Override
 	public AdminList queryAdmin(String userName) {

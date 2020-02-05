@@ -15,7 +15,7 @@ import com.github.pagehelper.PageInfo;
 public class GoodsDetailServiceImpl implements GoodsDetailService{
 
 	@Autowired
-	GoodsDetailMapper goodsDetailMapper;
+	private GoodsDetailMapper goodsDetailMapper;
 	
 	@Override
 	public void addGoodsDetail(String imageUrls, String type, String name, double price, double stock,

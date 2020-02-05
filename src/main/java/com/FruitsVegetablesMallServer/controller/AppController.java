@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
+import com.FruitsVegetablesMallServer.service.BannerListService;
 import com.FruitsVegetablesMallServer.service.GoodsDetailService;
 
 @RestController
@@ -18,6 +19,18 @@ public class AppController {
 
 	@Autowired
 	private GoodsDetailService goodsDetailService;
+	
+	@Autowired
+	private BannerListService bannerListService;
+	
+	@RequestMapping(value = "/specialoffers",method = RequestMethod.GET)
+	public Map<String,Object> queryBannerList() {
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("code", "0");
+		data.put("message", "OK");
+		data.put("data", bannerListService.queryAllBannerList());
+		return data;
+	}
 	
 	@RequestMapping(value = "/goods",method = RequestMethod.GET)
 	public Map<String,Object> queryAllGoodsDetail(@RequestParam(value="type") String type,@RequestParam(value="name") String name

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.FruitsVegetablesMallServer.mapper.BannerListMapper">
+ 
+ 	<insert id="addBannerList" parameterType="com.FruitsVegetablesMallServer.pojo.BannerList" >
+        insert into bannerlist (imageUrls) values(#{imageUrls})
+    </insert>
+ 
+ 	<delete id="deleteBannerList" parameterType="java.lang.Integer">
+		delete from bannerlist where id = #{id}
+	</delete>
+ 
+ 	<select id="queryAllBannerList" resultType="com.FruitsVegetablesMallServer.pojo.BannerList">
+        select * from bannerlist where 1=1
+    </select>
+    
+    <select id="queryBannerList" resultType="com.FruitsVegetablesMallServer.pojo.BannerList">
+        select * from bannerlist where id=#{id}
+    </select>
+ 
+ 	<update id="updateBannerList" parameterType="com.FruitsVegetablesMallServer.pojo.BannerList">
+		Update bannerlist set imageUrls = #{imageUrls} where id = #{id}
+	</update>
+ 
+</mapper>

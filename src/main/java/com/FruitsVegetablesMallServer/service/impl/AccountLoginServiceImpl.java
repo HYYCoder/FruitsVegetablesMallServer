@@ -11,7 +11,7 @@ import com.FruitsVegetablesMallServer.service.AccountLoginService;
 public class AccountLoginServiceImpl implements AccountLoginService{
 
 	@Autowired
-	AccountLoginMapper accountLoginMapper;
+	private AccountLoginMapper accountLoginMapper;
 	
 	@Override
 	public AccountLogin queryAccountLogin(String userName, String password) {

@@ -20,10 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.FruitsVegetablesMallServer.pojo.AccountLogin;
 import com.FruitsVegetablesMallServer.pojo.AdminList;
+import com.FruitsVegetablesMallServer.pojo.BannerList;
 import com.FruitsVegetablesMallServer.pojo.ChangeGoods;
 import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
 import com.FruitsVegetablesMallServer.service.AccountLoginService;
 import com.FruitsVegetablesMallServer.service.AdminListService;
+import com.FruitsVegetablesMallServer.service.BannerListService;
 import com.FruitsVegetablesMallServer.service.GoodsDetailService;
 import com.FruitsVegetablesMallServer.util.TokenRequired;
 import com.FruitsVegetablesMallServer.util.TokenUtil;
@@ -37,6 +39,8 @@ public class ManageController {
 	private AccountLoginService accountLoginService;
 	@Autowired
 	private AdminListService adminListService;
+	@Autowired
+	private BannerListService bannerListService;
 	@Autowired
 	private GoodsDetailService goodsDetailService;
 	@Autowired
@@ -61,15 +65,7 @@ public class ManageController {
 		return adminListService.queryAdmin(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
 	}
 
-	@TokenRequired
-	@RequestMapping(value = "/manage/add/goods",method = RequestMethod.POST)
-	public String addGoodsDetail(@RequestBody ChangeGoods changeGoods) {
-		goodsDetailService.addGoodsDetail(changeGoods.getImageUrls(), changeGoods.getType(), changeGoods.getName(), changeGoods.getPrice(),
-				changeGoods.getStock(), changeGoods.getSpecification(), changeGoods.getReducedPrice(), changeGoods.getDetail());
-		return "OK";
-	}
-	
-	// 添加商品图片
+	// 添加图片
 	@RequestMapping(value = "/manage/upload/image", method = RequestMethod.POST)
 	@TokenRequired
 	@ResponseBody
@@ -97,6 +93,52 @@ public class ManageController {
 		} else {
 			return null;
 		}
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/add/banner",method = RequestMethod.POST)
+	public String addBannerList(@RequestBody String imageUrl) {
+		bannerListService.addBannerList(imageUrl);
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/delete/banner/{id}",method = RequestMethod.DELETE)
+	public String deleteBannerList(@PathVariable(value="id") Integer id) {
+		bannerListService.deleteBannerList(id);
+		return "OK";
+	}
+	
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/banner",method = RequestMethod.GET)
+	public Map<String,Object> queryAllBannerList(@RequestParam(value="current") int current
+			,@RequestParam(value="pageSize") int pageSize) {
+		PageInfo<BannerList> pageInfo = bannerListService.queryAllBannerList(current,pageSize);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("data", pageInfo.getList());
+		data.put("total", pageInfo.getTotal());
+		data.put("success", true);
+		data.put("pageSize", pageInfo.getPageSize());
+		data.put("current", pageInfo.getPageNum());
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/update/banner",method = RequestMethod.PUT)
+	public String updateBannerList(@RequestBody GoodsDetail goodsDetail) {
+		goodsDetailService.updateGoodsDetail(goodsDetail.getId(), goodsDetail.getImageUrls(), goodsDetail.getType()
+				, goodsDetail.getName(), goodsDetail.getPrice(), goodsDetail.getStock(), goodsDetail.getSpecification()
+				, goodsDetail.getReducedPrice(), goodsDetail.getDetail());
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/add/goods",method = RequestMethod.POST)
+	public String addGoodsDetail(@RequestBody ChangeGoods changeGoods) {
+		goodsDetailService.addGoodsDetail(changeGoods.getImageUrls(), changeGoods.getType(), changeGoods.getName(), changeGoods.getPrice(),
+				changeGoods.getStock(), changeGoods.getSpecification(), changeGoods.getReducedPrice(), changeGoods.getDetail());
+		return "OK";
 	}
 	
 	@TokenRequired

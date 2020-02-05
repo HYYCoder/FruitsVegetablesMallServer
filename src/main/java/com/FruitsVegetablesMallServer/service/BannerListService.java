@@ -1,8 +1,7 @@
 package com.FruitsVegetablesMallServer.service;
 
-import java.util.List;
-
 import com.FruitsVegetablesMallServer.pojo.BannerList;
+import com.github.pagehelper.PageInfo;
 
 public interface BannerListService {
 
@@ -10,7 +9,7 @@ public interface BannerListService {
 	
 	void deleteBannerList(int id);
 	
-	List<BannerList> queryAllBannerList();
+	PageInfo<BannerList> queryAllBannerList(int current, int pageSize);
 	
 	BannerList queryBannerList(int id);
 	

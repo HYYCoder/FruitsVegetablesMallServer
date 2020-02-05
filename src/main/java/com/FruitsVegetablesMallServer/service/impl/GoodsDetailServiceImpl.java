@@ -32,7 +32,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	public PageInfo<GoodsDetail> queryAllGoodsDetail(String type,String name,double price,
 			double stock,double reducedPrice,int current, int pageSize) {
 		PageHelper.startPage(current,pageSize);
-		List<GoodsDetail> list=goodsDetailMapper.queryAllGoodsDetail(type,name,price,
+		List<GoodsDetail> list = goodsDetailMapper.queryAllGoodsDetail(type,name,price,
 				stock,reducedPrice);
 		PageInfo<GoodsDetail> page = new PageInfo<GoodsDetail>(list);
 		return page;

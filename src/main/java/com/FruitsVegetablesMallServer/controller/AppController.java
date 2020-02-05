@@ -19,16 +19,16 @@ public class AppController {
 
 	@Autowired
 	private GoodsDetailService goodsDetailService;
-	
 	@Autowired
 	private BannerListService bannerListService;
 	
 	@RequestMapping(value = "/specialoffers",method = RequestMethod.GET)
-	public Map<String,Object> queryBannerList() {
+	public Map<String,Object> queryBannerList(@RequestParam(value="current") int current
+			,@RequestParam(value="pageSize") int pageSize) {
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");
-		data.put("data", bannerListService.queryAllBannerList());
+		data.put("data", bannerListService.queryAllBannerList(current,pageSize).getList());
 		return data;
 	}
 	

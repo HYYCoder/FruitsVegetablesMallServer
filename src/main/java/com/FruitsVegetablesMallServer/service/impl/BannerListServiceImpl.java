@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.FruitsVegetablesMallServer.mapper.BannerListMapper;
 import com.FruitsVegetablesMallServer.pojo.BannerList;
 import com.FruitsVegetablesMallServer.service.BannerListService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Service
 public class BannerListServiceImpl implements BannerListService{
@@ -26,8 +28,11 @@ public class BannerListServiceImpl implements BannerListService{
 	}
 
 	@Override
-	public List<BannerList> queryAllBannerList() {
-		return bannerListMapper.queryAllBannerList();
+	public PageInfo<BannerList> queryAllBannerList(int current, int pageSize) {
+		PageHelper.startPage(current,pageSize);
+		List<BannerList> list = bannerListMapper.queryAllBannerList();
+		PageInfo<BannerList> page = new PageInfo<BannerList>(list);
+		return page;
 	}
 
 	@Override

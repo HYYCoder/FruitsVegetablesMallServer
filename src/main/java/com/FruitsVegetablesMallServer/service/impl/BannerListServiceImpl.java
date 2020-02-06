@@ -18,8 +18,8 @@ public class BannerListServiceImpl implements BannerListService{
 	private BannerListMapper bannerListMapper;
 
 	@Override
-	public void addBannerList(String imageUrl) {
-		bannerListMapper.addBannerList(imageUrl);
+	public void addBannerList(int orders,String imageUrl,String detail) {
+		bannerListMapper.addBannerList(orders,imageUrl,detail);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class BannerListServiceImpl implements BannerListService{
 	}
 
 	@Override
-	public PageInfo<BannerList> queryAllBannerList(int current, int pageSize) {
+	public PageInfo<BannerList> queryAllBannerList(int current,int pageSize) {
 		PageHelper.startPage(current,pageSize);
 		List<BannerList> list = bannerListMapper.queryAllBannerList();
 		PageInfo<BannerList> page = new PageInfo<BannerList>(list);
@@ -41,8 +41,8 @@ public class BannerListServiceImpl implements BannerListService{
 	}
 
 	@Override
-	public void updateBannerList(int id, String imageUrl) {
-		bannerListMapper.updateBannerList(id, imageUrl);
+	public void updateBannerList(int id,int orders,String imageUrl,String detail) {
+		bannerListMapper.updateBannerList(id,orders,imageUrl,detail);
 	}
 	
 

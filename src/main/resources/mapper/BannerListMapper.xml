@@ -3,7 +3,7 @@
 <mapper namespace="com.FruitsVegetablesMallServer.mapper.BannerListMapper">
  
  	<insert id="addBannerList" parameterType="com.FruitsVegetablesMallServer.pojo.BannerList" >
-        insert into bannerlist (imageUrls) values(#{imageUrls})
+        insert into bannerlist (orders,imageUrl,detail) values(#{orders},#{imageUrl},#{detail})
     </insert>
  
  	<delete id="deleteBannerList" parameterType="java.lang.Integer">
@@ -11,7 +11,7 @@
 	</delete>
  
  	<select id="queryAllBannerList" resultType="com.FruitsVegetablesMallServer.pojo.BannerList">
-        select * from bannerlist where 1=1
+        select * from bannerlist order by orders
     </select>
     
     <select id="queryBannerList" resultType="com.FruitsVegetablesMallServer.pojo.BannerList">
@@ -19,7 +19,7 @@
     </select>
  
  	<update id="updateBannerList" parameterType="com.FruitsVegetablesMallServer.pojo.BannerList">
-		Update bannerlist set imageUrls = #{imageUrls} where id = #{id}
+		Update bannerlist set orders = #{orders},imageUrl = #{imageUrl},detail = #{detail} where id = #{id}
 	</update>
  
 </mapper>

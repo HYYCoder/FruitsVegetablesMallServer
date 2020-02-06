@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.FruitsVegetablesMallServer.pojo.AccountLogin;
 import com.FruitsVegetablesMallServer.pojo.AdminList;
 import com.FruitsVegetablesMallServer.pojo.BannerList;
-import com.FruitsVegetablesMallServer.pojo.ChangeGoods;
 import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
 import com.FruitsVegetablesMallServer.service.AccountLoginService;
 import com.FruitsVegetablesMallServer.service.AdminListService;
@@ -97,8 +96,8 @@ public class ManageController {
 	
 	@TokenRequired
 	@RequestMapping(value = "/manage/add/banner",method = RequestMethod.POST)
-	public String addBannerList(@RequestBody String imageUrl) {
-		bannerListService.addBannerList(imageUrl);
+	public String addBannerList(@RequestBody Map<String,String> data) {
+		bannerListService.addBannerList(Integer.parseInt(data.get("orders")),data.get("imageUrl"),data.get("detail"));
 		return "OK";
 	}
 	
@@ -126,18 +125,18 @@ public class ManageController {
 	
 	@TokenRequired
 	@RequestMapping(value = "/manage/update/banner",method = RequestMethod.PUT)
-	public String updateBannerList(@RequestBody GoodsDetail goodsDetail) {
-		goodsDetailService.updateGoodsDetail(goodsDetail.getId(), goodsDetail.getImageUrls(), goodsDetail.getType()
-				, goodsDetail.getName(), goodsDetail.getPrice(), goodsDetail.getStock(), goodsDetail.getSpecification()
-				, goodsDetail.getReducedPrice(), goodsDetail.getDetail());
+	public String updateBannerList(@RequestBody Map<String,String> data) {
+		bannerListService.updateBannerList(Integer.parseInt(data.get("id")),Integer.parseInt(data.get("orders")),data.get("imageUrl")
+				,data.get("detail"));
 		return "OK";
 	}
 	
 	@TokenRequired
 	@RequestMapping(value = "/manage/add/goods",method = RequestMethod.POST)
-	public String addGoodsDetail(@RequestBody ChangeGoods changeGoods) {
-		goodsDetailService.addGoodsDetail(changeGoods.getImageUrls(), changeGoods.getType(), changeGoods.getName(), changeGoods.getPrice(),
-				changeGoods.getStock(), changeGoods.getSpecification(), changeGoods.getReducedPrice(), changeGoods.getDetail());
+	public String addGoodsDetail(@RequestBody Map<String,String> data) {
+		goodsDetailService.addGoodsDetail(data.get("imageUrls"), data.get("type"), data.get("name")
+				, Double.parseDouble(data.get("price")), Double.parseDouble(data.get("stock"))
+				, data.get("specification"), Double.parseDouble(data.get("reducedPrice")), data.get("detail"));
 		return "OK";
 	}
 	

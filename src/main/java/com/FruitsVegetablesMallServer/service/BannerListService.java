@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 
 public interface BannerListService {
 
-	void addBannerList(String imageUrl);
+	void addBannerList(int orders,String imageUrl,String detail);
 	
 	void deleteBannerList(int id);
 	
@@ -13,5 +13,5 @@ public interface BannerListService {
 	
 	BannerList queryBannerList(int id);
 	
-	void updateBannerList(int id,String imageUrl);
+	void updateBannerList(int id,int orders,String imageUrl,String detail);
 }

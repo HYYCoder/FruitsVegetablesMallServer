@@ -9,7 +9,7 @@ import com.FruitsVegetablesMallServer.pojo.BannerList;
 @Mapper
 public interface BannerListMapper {
 	
-	void addBannerList(String imageUrl);
+	void addBannerList(int orders,String imageUrl,String detail);
 	
 	void deleteBannerList(int id);
 	
@@ -17,5 +17,5 @@ public interface BannerListMapper {
 	
 	BannerList queryBannerList(int id);
 	
-	void updateBannerList(int id,String imageUrl);
+	void updateBannerList(int id,int orders,String imageUrl,String detail);
 }

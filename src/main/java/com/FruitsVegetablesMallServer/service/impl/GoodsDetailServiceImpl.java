@@ -18,9 +18,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	private GoodsDetailMapper goodsDetailMapper;
 	
 	@Override
-	public void addGoodsDetail(String imageUrls, String type, String name, double price, double stock,
+	public void addGoodsDetail(String imageUrls, int categoryId, String name, double price, double stock,
 			String specification, double reducedPrice, String detail) {
-		goodsDetailMapper.addGoodsDetail(imageUrls,type,name,price,stock,specification,reducedPrice,detail);
+		goodsDetailMapper.addGoodsDetail(imageUrls,categoryId,name,price,stock,specification,reducedPrice,detail);
 	}
 
 	@Override
@@ -29,10 +29,10 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	}
 
 	@Override
-	public PageInfo<GoodsDetail> queryAllGoodsDetail(String type,String name,double price,
+	public PageInfo<GoodsDetail> queryAllGoodsDetail(int categoryId,String name,double price,
 			double stock,double reducedPrice,int current, int pageSize) {
 		PageHelper.startPage(current,pageSize);
-		List<GoodsDetail> list = goodsDetailMapper.queryAllGoodsDetail(type,name,price,
+		List<GoodsDetail> list = goodsDetailMapper.queryAllGoodsDetail(categoryId,name,price,
 				stock,reducedPrice);
 		PageInfo<GoodsDetail> page = new PageInfo<GoodsDetail>(list);
 		return page;
@@ -44,9 +44,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	}
 
 	@Override
-	public void updateGoodsDetail(int id,String imageUrls,String type,String name,double price,
+	public void updateGoodsDetail(int id,String imageUrls,int categoryId,String name,double price,
 			double stock,String specification,double reducedPrice,String detail) {
-		goodsDetailMapper.updateGoodsDetail(id,imageUrls,type,name,price,
+		goodsDetailMapper.updateGoodsDetail(id,imageUrls,categoryId,name,price,
 				stock,specification,reducedPrice,detail);
 	}
 

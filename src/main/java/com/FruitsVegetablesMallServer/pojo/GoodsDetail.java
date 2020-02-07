@@ -3,7 +3,7 @@ package com.FruitsVegetablesMallServer.pojo;
 public class GoodsDetail {
 	private int id;
 	private String imageUrls;
-	private String type;
+	private int categoryId;
 	private String name;
 	private Double price;
 	private Double stock;
@@ -24,11 +24,11 @@ public class GoodsDetail {
 	public void setImageUrls(String imageUrls) {
 		this.imageUrls = imageUrls;
 	}
-	public String getType() {
-		return type;
+	public int getCategoryId() {
+		return categoryId;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
 	}
 	public String getName() {
 		return name;

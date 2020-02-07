@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.FruitsVegetablesMallServer.mapper.CategoryListMapper">
+
+    <select id="queryAllCategoryList" resultType="com.FruitsVegetablesMallServer.pojo.CategoryBean">
+        select * from categorylist order by orders
+    </select>
+    
+    <select id="queryAllSubCategoriesList" resultType="com.FruitsVegetablesMallServer.pojo.SubCategoriesBean">
+        select * from subcategorieslist order by orders
+    </select>
+    
+</mapper>

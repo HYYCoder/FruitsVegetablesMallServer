@@ -3,7 +3,7 @@
 <mapper namespace="com.FruitsVegetablesMallServer.mapper.GoodsDetailMapper">
  
  	<insert id="addGoodsDetail" parameterType="com.FruitsVegetablesMallServer.pojo.GoodsDetail" >
-        insert into goodsdetail (imageUrls,type,name,price,stock,specification,reducedPrice,detail) values(#{imageUrls},#{type},#{name},#{price},#{stock},#{specification},#{reducedPrice},#{detail})
+        insert into goodsdetail (imageUrls,categoryId,name,price,stock,specification,reducedPrice,detail) values(#{imageUrls},#{categoryId},#{name},#{price},#{stock},#{specification},#{reducedPrice},#{detail})
     </insert>
  
  	<delete id="deleteGoodsDetail" parameterType="java.lang.Integer">
@@ -13,8 +13,8 @@
  	<select id="queryAllGoodsDetail" resultType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">
         select * from goodsdetail 
         <where>
-		    <if test="type != ''">
-		         and type = #{type}
+		    <if test="categoryId >= 0">
+		         and categoryId = #{categoryId}
 		  	</if>
 		  	<if test="name != ''">
 		         or name = #{name}
@@ -36,7 +36,7 @@
     </select>
  
  	<update id="updateGoodsDetail" parameterType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">
-		Update goodsdetail set imageUrls = #{imageUrls},type = #{type},name = #{name},price = #{price},stock = #{stock},specification = #{specification},reducedPrice = #{reducedPrice},detail = #{detail} where id = #{id}
+		Update goodsdetail set imageUrls = #{imageUrls},categoryId = #{categoryId},name = #{name},price = #{price},stock = #{stock},specification = #{specification},reducedPrice = #{reducedPrice},detail = #{detail} where id = #{id}
 	</update>
  
 </mapper>

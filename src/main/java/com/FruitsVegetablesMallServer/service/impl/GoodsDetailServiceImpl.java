@@ -18,9 +18,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	private GoodsDetailMapper goodsDetailMapper;
 	
 	@Override
-	public void addGoodsDetail(String imageUrls, int categoryId, String name, double price, double stock,
-			String specification, double reducedPrice, String detail) {
-		goodsDetailMapper.addGoodsDetail(imageUrls,categoryId,name,price,stock,specification,reducedPrice,detail);
+	public void addGoodsDetail(String imageUrls,int categoryId,String name,double price,double stock,String specification
+			,double reducedPrice,double minimunOrderQuantity,double maximumOrderQuantity,double minimumIncrementQuantity,String detail) {
+		goodsDetailMapper.addGoodsDetail(imageUrls,categoryId,name,price,stock,specification,reducedPrice,minimunOrderQuantity,maximumOrderQuantity,minimumIncrementQuantity,detail);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 
 	@Override
 	public PageInfo<GoodsDetail> queryAllGoodsDetail(int categoryId,String name,double price,
-			double stock,double reducedPrice,int current, int pageSize) {
+			double stock,double reducedPrice,int current,int pageSize) {
 		PageHelper.startPage(current,pageSize);
 		List<GoodsDetail> list = goodsDetailMapper.queryAllGoodsDetail(categoryId,name,price,
 				stock,reducedPrice);
@@ -44,10 +44,10 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	}
 
 	@Override
-	public void updateGoodsDetail(int id,String imageUrls,int categoryId,String name,double price,
-			double stock,String specification,double reducedPrice,String detail) {
+	public void updateGoodsDetail(int id,String imageUrls,int categoryId,String name,double price,double stock,String specification
+			,double reducedPrice,double minimunOrderQuantity,double maximumOrderQuantity,double minimumIncrementQuantity,String detail) {
 		goodsDetailMapper.updateGoodsDetail(id,imageUrls,categoryId,name,price,
-				stock,specification,reducedPrice,detail);
+				stock,specification,reducedPrice,minimunOrderQuantity,maximumOrderQuantity,minimumIncrementQuantity,detail);
 	}
 
 }

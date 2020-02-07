@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FruitsVegetablesMallServer.pojo.CategoryBean;
-import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
 import com.FruitsVegetablesMallServer.pojo.SubCategoriesBean;
 import com.FruitsVegetablesMallServer.service.BannerListService;
 import com.FruitsVegetablesMallServer.service.CategoryListService;
@@ -78,8 +77,21 @@ public class AppController {
 	}
 	
 	@RequestMapping(value = "/goods/{id}",method = RequestMethod.GET)
-	public GoodsDetail queryGoodsDetail(@PathVariable(value="id") Integer id) {
-		return goodsDetailService.queryGoodsDetail(id);
+	public Map<String,Object> queryGoodsDetail(@PathVariable(value="id") Integer id) {
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("code", "0");
+		data.put("message", "OK");
+		data.put("data", goodsDetailService.queryGoodsDetail(id));
+		return data;
 	}
-	
+	@RequestMapping(value = "/cart/items/count",method = RequestMethod.GET)
+	public Map<String,Object> queryShoppingCarCount() {
+		Map<String,Object> count = new HashMap<String,Object>();
+		count.put("count", 0);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("code", "0");
+		data.put("message", "OK");
+		data.put("data", count);
+		return data;
+	}
 }

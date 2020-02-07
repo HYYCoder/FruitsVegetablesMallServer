@@ -9,6 +9,9 @@ public class GoodsDetail {
 	private Double stock;
 	private String specification;
 	private Double reducedPrice;
+	private Double minimunOrderQuantity;
+	private Double maximumOrderQuantity;
+	private Double minimumIncrementQuantity;
 	private String detail;
 	
 	
@@ -59,6 +62,24 @@ public class GoodsDetail {
 	}
 	public void setReducedPrice(Double reducedPrice) {
 		this.reducedPrice = reducedPrice;
+	}
+	public Double getMinimunOrderQuantity() {
+		return minimunOrderQuantity;
+	}
+	public void setMinimunOrderQuantity(Double minimunOrderQuantity) {
+		this.minimunOrderQuantity = minimunOrderQuantity;
+	}
+	public Double getMaximumOrderQuantity() {
+		return maximumOrderQuantity;
+	}
+	public void setMaximumOrderQuantity(Double maximumOrderQuantity) {
+		this.maximumOrderQuantity = maximumOrderQuantity;
+	}
+	public Double getMinimumIncrementQuantity() {
+		return minimumIncrementQuantity;
+	}
+	public void setMinimumIncrementQuantity(Double minimumIncrementQuantity) {
+		this.minimumIncrementQuantity = minimumIncrementQuantity;
 	}
 	public String getDetail() {
 		return detail;

@@ -9,8 +9,8 @@ import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
 @Mapper
 public interface GoodsDetailMapper {
 	
-	void addGoodsDetail(String imageUrls,int categoryId,String name,double price,
-			double stock,String specification,double reducedPrice,String detail);
+	void addGoodsDetail(String imageUrls,int categoryId,String name,double price,double stock,String specification
+			,double reducedPrice,double minimunOrderQuantity,double maximumOrderQuantity,double minimumIncrementQuantity,String detail);
 	
 	void deleteGoodsDetail(int id);
 	
@@ -19,6 +19,6 @@ public interface GoodsDetailMapper {
 	
 	GoodsDetail queryGoodsDetail(int id);
 	
-	void updateGoodsDetail(int id,String imageUrls,int categoryId,String name,double price,
-			double stock,String specification,double reducedPrice,String detail);
+	void updateGoodsDetail(int id,String imageUrls,int categoryId,String name,double price,double stock,String specification
+			,double reducedPrice,double minimunOrderQuantity,double maximumOrderQuantity,double minimumIncrementQuantity,String detail);
 }

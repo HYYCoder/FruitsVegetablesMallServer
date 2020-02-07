@@ -134,9 +134,11 @@ public class ManageController {
 	@TokenRequired
 	@RequestMapping(value = "/manage/add/goods",method = RequestMethod.POST)
 	public String addGoodsDetail(@RequestBody Map<String,String> data) {
-		goodsDetailService.addGoodsDetail(data.get("imageUrls"), Integer.parseInt(data.get("categoryId")), data.get("name")
-				, Double.parseDouble(data.get("price")), Double.parseDouble(data.get("stock"))
-				, data.get("specification"), Double.parseDouble(data.get("reducedPrice")), data.get("detail"));
+		goodsDetailService.addGoodsDetail(data.get("imageUrls"),Integer.parseInt(data.get("categoryId")),data.get("name")
+				,Double.parseDouble(data.get("price")),Double.parseDouble(data.get("stock")),data.get("specification")
+				,Double.parseDouble(data.get("reducedPrice")),Double.parseDouble(data.get("minimunOrderQuantity"))
+				,Double.parseDouble(data.get("maximumOrderQuantity")),Double.parseDouble(data.get("minimumIncrementQuantity"))
+				,data.get("detail"));
 		return "OK";
 	}
 	
@@ -150,12 +152,12 @@ public class ManageController {
 	
 	@TokenRequired
 	@RequestMapping(value = "/manage/goods",method = RequestMethod.GET)
-	public Map<String,Object> queryAllGoodsDetail(@RequestParam(value="categoryId") int categoryId,@RequestParam(value="name") String name
+	public Map<String,Object> queryAllGoodsDetail(@RequestParam(value="categoryId") String categoryId,@RequestParam(value="name") String name
 			,@RequestParam(value="price") Double price,@RequestParam(value="stock") Double stock
 			,@RequestParam(value="reducedPrice") Double reducedPrice,@RequestParam(value="current") int current
 			,@RequestParam(value="pageSize") int pageSize) {
-		PageInfo<GoodsDetail> pageInfo= goodsDetailService.queryAllGoodsDetail(categoryId,name,price==null?-1:price,
-				stock==null?-1:stock,reducedPrice==null?-1:reducedPrice,current,pageSize);
+		PageInfo<GoodsDetail> pageInfo= goodsDetailService.queryAllGoodsDetail(categoryId==""?-1:Integer.parseInt(categoryId)
+				,name,price==null?-1:price,stock==null?-1:stock,reducedPrice==null?-1:reducedPrice,current,pageSize);
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data", pageInfo.getList());
 		data.put("total", pageInfo.getTotal());
@@ -168,9 +170,10 @@ public class ManageController {
 	@TokenRequired
 	@RequestMapping(value = "/manage/update/goods",method = RequestMethod.PUT)
 	public String updateGoodsDetail(@RequestBody GoodsDetail goodsDetail) {
-		goodsDetailService.updateGoodsDetail(goodsDetail.getId(), goodsDetail.getImageUrls(), goodsDetail.getCategoryId()
-				, goodsDetail.getName(), goodsDetail.getPrice(), goodsDetail.getStock(), goodsDetail.getSpecification()
-				, goodsDetail.getReducedPrice(), goodsDetail.getDetail());
+		goodsDetailService.updateGoodsDetail(goodsDetail.getId(),goodsDetail.getImageUrls(),goodsDetail.getCategoryId()
+				,goodsDetail.getName(),goodsDetail.getPrice(),goodsDetail.getStock(),goodsDetail.getSpecification()
+				,goodsDetail.getReducedPrice(),goodsDetail.getMinimunOrderQuantity(),goodsDetail.getMaximumOrderQuantity()
+				,goodsDetail.getMinimumIncrementQuantity(),goodsDetail.getDetail());
 		return "OK";
 	}
 }

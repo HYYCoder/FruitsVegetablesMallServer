@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.FruitsVegetablesMallServer.mapper.UserListMapper">
+ 
+ 	<insert id="addUserList" parameterType="com.FruitsVegetablesMallServer.pojo.UserList" >
+        insert into userlist (name, mobile, address, userName, receivingPhone) values(#{name},#{mobile},#{address},#{userName},#{receivingPhone})
+    </insert>
+ 
+ 	<delete id="deleteUserList" parameterType="java.lang.Integer">
+		delete from userlist where id = #{id}
+	</delete>
+ 
+ 	<select id="queryAllUserList" resultType="com.FruitsVegetablesMallServer.pojo.UserList">
+        select * from userlist 
+        <where>
+		    <if test="name != ''">
+		         and name like'%${name}%'
+		  	</if>
+		  	<if test="mobile != ''">
+		         or mobile = #{mobile}
+		  	</if>
+		  	<if test="address != ''">
+		         or address like'%${address}%'
+		  	</if>
+		  	<if test="userName != ''">
+		         or userName = #{userName}
+		  	</if>
+		  	<if test="receivingPhone != ''">
+		         or receivingPhone = #{receivingPhone}
+		  	</if>
+		</where>
+    </select>
+    
+    <select id="queryUserList" resultType="com.FruitsVegetablesMallServer.pojo.UserList">
+        select * from userlist where userName=#{userName}
+    </select>
+ 
+ 	<update id="updateUserList" parameterType="com.FruitsVegetablesMallServer.pojo.UserList">
+		Update userlist set name = #{name},mobile = #{mobile},address = #{address},userName = #{userName},receivingPhone = #{receivingPhone} where id = #{id}
+	</update>
+ 
+</mapper>

@@ -14,7 +14,7 @@ public interface AdminListMapper {
 	
 	//List<BannerList> queryAdmin();
 	
-	AdminList queryAdmin(String userName);
+	AdminList queryAdminList(String userName);
 	
 	//void updateAdmin(int id,String imageUrl);
 }

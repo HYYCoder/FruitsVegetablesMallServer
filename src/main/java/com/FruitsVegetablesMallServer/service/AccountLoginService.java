@@ -4,5 +4,5 @@ import com.FruitsVegetablesMallServer.pojo.AccountLogin;
 
 public interface AccountLoginService {
 
-	AccountLogin queryAccountLogin(String userName,String password);
+	AccountLogin queryAccountLogin(String userName,String password,String type);
 }

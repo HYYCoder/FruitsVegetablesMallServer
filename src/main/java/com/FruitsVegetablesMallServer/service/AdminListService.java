@@ -4,5 +4,5 @@ import com.FruitsVegetablesMallServer.pojo.AdminList;
 
 public interface AdminListService {
 	
-	AdminList queryAdmin(String userName);
+	AdminList queryAdminList(String userName);
 }

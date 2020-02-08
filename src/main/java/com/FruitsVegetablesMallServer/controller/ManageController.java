@@ -46,13 +46,12 @@ public class ManageController {
 	private HttpServletRequest httpServletRequest;
 	
 	@RequestMapping(value = "/admin/login",method = RequestMethod.POST)
-	public Map<String, String> accountLogin(@RequestBody AccountLogin accountLogin) {
-		AccountLogin isAccountLogin = accountLoginService.queryAccountLogin(accountLogin.getUserName(), accountLogin.getPassword());
-		if(isAccountLogin.getUserName() !=null 
-				&& isAccountLogin.getPassword() !=null) {
+	public Map<String, String> adminLogin(@RequestBody Map<String,String> data) {
+		AccountLogin isAccountLogin = accountLoginService.queryAccountLogin(data.get("userName"), data.get("password"),"admin");
+		if(isAccountLogin.getUserName() !=null && isAccountLogin.getPassword() !=null && isAccountLogin.getType() != "admin") {
 			Map<String, String> token = new HashMap<String,String>();
 			token.put("id",isAccountLogin.getId()+"");
-			token.put("token",TokenUtil.createJwtToken(accountLogin.getUserName(),"FruitsVegetablesMall"));
+			token.put("token",TokenUtil.createJwtToken(data.get("userName"),"FruitsVegetablesMall"));
 			return token;
 		}
 		return null;
@@ -61,7 +60,7 @@ public class ManageController {
 	@TokenRequired
 	@RequestMapping(value = "/manage",method = RequestMethod.GET)
 	public AdminList getAdmin() {
-		return adminListService.queryAdmin(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
+		return adminListService.queryAdminList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
 	}
 
 	// 添加图片

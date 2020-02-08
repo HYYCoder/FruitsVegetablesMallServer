@@ -3,7 +3,7 @@
 <mapper namespace="com.FruitsVegetablesMallServer.mapper.AccountLoginMapper">
 
     <select id="queryAccountLogin" resultType="com.FruitsVegetablesMallServer.pojo.AccountLogin">
-        select * from accountlogin where userName=#{userName} and password=#{password}
+        select * from accountlogin where userName = #{userName} and password = #{password} and type = #{type}
     </select>
 
 </mapper>

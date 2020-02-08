@@ -17,7 +17,7 @@
 		         and categoryId = #{categoryId}
 		  	</if>
 		  	<if test="name != ''">
-		         or name = #{name}
+		         or name like'%${name}%'
 		  	</if>
 		  	<if test="price >= 0">
 		         or price = #{price}

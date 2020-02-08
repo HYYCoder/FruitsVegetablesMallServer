@@ -14,8 +14,8 @@ public class AdminListServiceImpl implements AdminListService{
 	private AdminListMapper adminListMapper;
 
 	@Override
-	public AdminList queryAdmin(String userName) {
-		return adminListMapper.queryAdmin(userName);
+	public AdminList queryAdminList(String userName) {
+		return adminListMapper.queryAdminList(userName);
 	}
 
 }

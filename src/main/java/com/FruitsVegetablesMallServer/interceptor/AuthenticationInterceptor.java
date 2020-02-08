@@ -11,13 +11,18 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.FruitsVegetablesMallServer.pojo.AdminList;
+import com.FruitsVegetablesMallServer.pojo.UserList;
 import com.FruitsVegetablesMallServer.service.AdminListService;
+import com.FruitsVegetablesMallServer.service.UserListService;
 import com.FruitsVegetablesMallServer.util.TokenRequired;
 import com.FruitsVegetablesMallServer.util.TokenUtil;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
-    AdminListService adminListService;
+    private AdminListService adminListService;
+    @Autowired
+    private UserListService userListService;
+    
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
         String token = httpServletRequest.getHeader("Authorization");// 从 http 请求头中取出 token
@@ -49,8 +54,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 } catch (Exception j) {
                     throw new RuntimeException("401");
                 }
-                AdminList adminList = adminListService.queryAdmin(userName);
-                if (adminList == null) {
+                AdminList adminList = adminListService.queryAdminList(userName);
+                UserList userList = userListService.queryUserList(userName);
+                if (adminList == null && userList == null) {
                     throw new RuntimeException("用户不存在，请重新登录");
                 }
                 return true;

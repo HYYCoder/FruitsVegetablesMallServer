@@ -7,6 +7,6 @@ import com.FruitsVegetablesMallServer.pojo.AccountLogin;
 @Mapper
 public interface AccountLoginMapper {
 	
-	AccountLogin queryAccountLogin(String userName,String password);
+	AccountLogin queryAccountLogin(String userName,String password,String type);
 	
 }

@@ -58,15 +58,55 @@ public class ManageController {
 	}
 	
 	@TokenRequired
+	@RequestMapping(value = "/manage/add/admin",method = RequestMethod.POST)
+	public String addAdminList(@RequestBody Map<String,String> data) {
+		accountLoginService.addAccountLogin(data.get("userName"),data.get("password"),data.get("type"));
+		adminListService.addUserList(data.get("userName"),data.get("type"),data.get("imageUrl"),data.get("mobile"),data.get("name"));
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/delete/admin/{id}",method = RequestMethod.DELETE)
+	public String deleteAdminList(@PathVariable(value="id") Integer id) {
+		adminListService.deleteAdminList(id);
+		return "OK";
+	}
+	
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/admin",method = RequestMethod.GET)
+	public Map<String,Object> queryAllAdminList(@RequestParam(value="userName") String userName,@RequestParam(value="type") String type
+			,@RequestParam(value="mobile") String mobile,@RequestParam(value="name") String name
+			,@RequestParam(value="current") int current,@RequestParam(value="pageSize") int pageSize) {
+		PageInfo<AdminList> pageInfo = adminListService.queryAllAdminList(userName, type, mobile, name, current, pageSize);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("data", pageInfo.getList());
+		data.put("total", pageInfo.getTotal());
+		data.put("success", true);
+		data.put("pageSize", pageInfo.getPageSize());
+		data.put("current", pageInfo.getPageNum());
+		return data;
+	}
+	
+	@TokenRequired
 	@RequestMapping(value = "/manage",method = RequestMethod.GET)
-	public AdminList getAdmin() {
+	public AdminList getAdminList() {
 		return adminListService.queryAdminList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/update/admin",method = RequestMethod.PUT)
+	public String updateAdminList(@RequestBody Map<String,String> data) {
+		accountLoginService.updateAccountLogin(data.get("userName"), data.get("password")==""?accountLoginService.queryUpdateAccountLogin(data.get("userName")).getPassword():data.get("password"), data.get("password"));
+		adminListService.updateAdminList(data.get("userName"),data.get("type"),data.get("imageUrl"),data.get("mobile")
+				,data.get("name"));
+		return "OK";
 	}
 
 	// 添加图片
-	@RequestMapping(value = "/manage/upload/image", method = RequestMethod.POST)
 	@TokenRequired
 	@ResponseBody
+	@RequestMapping(value = "/manage/upload/image", method = RequestMethod.POST)
 	public String uploadImage(@RequestParam("image") MultipartFile file)
 			throws IOException {
 

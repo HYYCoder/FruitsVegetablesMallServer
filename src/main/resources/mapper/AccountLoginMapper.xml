@@ -2,8 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.FruitsVegetablesMallServer.mapper.AccountLoginMapper">
 
+	<insert id="addAccountLogin" parameterType="com.FruitsVegetablesMallServer.pojo.AccountLogin" >
+        insert into accountlogin (userName,password,type) values(#{userName},#{password},#{type})
+    </insert>
+ 
+ 	<delete id="deleteAccountLogin" parameterType="java.lang.Integer">
+		delete from accountlogin where id = #{id}
+	</delete>
+
     <select id="queryAccountLogin" resultType="com.FruitsVegetablesMallServer.pojo.AccountLogin">
         select * from accountlogin where userName = #{userName} and password = #{password} and type = #{type}
     </select>
 
+    <select id="queryUpdateAccountLogin" resultType="com.FruitsVegetablesMallServer.pojo.AccountLogin">
+        select * from accountlogin where userName = #{userName}
+    </select>
+    
+     <update id="updateAccountLogin" parameterType="com.FruitsVegetablesMallServer.pojo.AccountLogin">
+		Update accountlogin set password = #{password},type = #{type} where userName = #{userName}
+	</update>
+	
 </mapper>

@@ -2,8 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.FruitsVegetablesMallServer.mapper.AdminListMapper">
 
+	<insert id="addAdminList" parameterType="com.FruitsVegetablesMallServer.pojo.AdminList" >
+        insert into adminlist (userName,type,imageUrl,mobile,name) values(#{userName},#{type},#{imageUrl},#{mobile},#{name})
+    </insert>
+ 
+ 	<delete id="deleteAdminList" parameterType="java.lang.Integer">
+		delete from adminlist where id = #{id}
+	</delete>
+ 
+ 	<select id="queryAllAdminList" resultType="com.FruitsVegetablesMallServer.pojo.AdminList">
+        select * from adminlist 
+        <where>
+		  	<if test="userName != ''">
+		         and userName = #{userName}
+		  	</if>
+		  	<if test="type != ''">
+		         or type = #{type}
+		  	</if>
+		  	<if test="mobile != ''">
+		         or mobile = #{mobile}
+		  	</if>
+		  	<if test="name != ''">
+		         or name like'%${name}%'
+		  	</if>
+		</where>
+    </select>
+
     <select id="queryAdminList" resultType="com.FruitsVegetablesMallServer.pojo.AdminList">
         select * from adminlist where userName = #{userName}
     </select>
+    
+     <update id="updateAdminList" parameterType="com.FruitsVegetablesMallServer.pojo.AdminList">
+		Update adminlist set type = #{type},imageUrl = #{imageUrl},mobile = #{mobile},name = #{name} where userName = #{userName}
+	</update>
 
 </mapper>

@@ -8,6 +8,7 @@ import com.FruitsVegetablesMallServer.pojo.UserList;
 
 @Mapper
 public interface UserListMapper {
+	
 	void addUserList(String name,String mobile,String address,String userCode,String receivingPhone);
 	
 	void deleteUserList(int id);

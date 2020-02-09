@@ -4,7 +4,7 @@ public class AdminList {
 	private int id;
 	private String userName;
 	private String type;
-	private String avatar;
+	private String imageUrl;
 	private String mobile;
 	private String name;
 	
@@ -26,11 +26,11 @@ public class AdminList {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getAvatar() {
-		return avatar;
+	public String getImageUrl() {
+		return imageUrl;
 	}
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	public String getMobile() {
 		return mobile;

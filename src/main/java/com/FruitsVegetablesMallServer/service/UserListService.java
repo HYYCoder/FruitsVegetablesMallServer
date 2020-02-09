@@ -4,6 +4,7 @@ import com.FruitsVegetablesMallServer.pojo.UserList;
 import com.github.pagehelper.PageInfo;
 
 public interface UserListService {
+	
 	void addUserList(String name,String mobile,String address,String userCode,String receivingPhone);
 	
 	void deleteUserList(int id);

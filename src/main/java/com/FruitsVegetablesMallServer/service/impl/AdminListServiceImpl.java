@@ -18,7 +18,7 @@ public class AdminListServiceImpl implements AdminListService{
 	private AdminListMapper adminListMapper;
 
 	@Override
-	public void addUserList(String userName, String type, String imageUrl, String mobile, String name) {
+	public void addAdminList(String userName, String type, String imageUrl, String mobile, String name) {
 		adminListMapper.addAdminList(userName, type, imageUrl, mobile, name);
 	}
 

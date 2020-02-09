@@ -36,7 +36,7 @@
     </select>
  
  	<update id="updateUserList" parameterType="com.FruitsVegetablesMallServer.pojo.UserList">
-		Update userlist set name = #{name},mobile = #{mobile},address = #{address},userName = #{userName},receivingPhone = #{receivingPhone} where id = #{id}
+		Update userlist set name = #{name},mobile = #{mobile},address = #{address},receivingPhone = #{receivingPhone} where userName = #{userName}
 	</update>
  
 </mapper>

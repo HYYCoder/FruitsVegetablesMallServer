@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 
 public interface AdminListService {
 	
-	void addUserList(String userName,String type,String imageUrl,String mobile,String name);
+	void addAdminList(String userName,String type,String imageUrl,String mobile,String name);
 	
 	void deleteAdminList(int id);
 	

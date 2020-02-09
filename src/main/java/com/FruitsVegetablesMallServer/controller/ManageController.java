@@ -22,10 +22,12 @@ import com.FruitsVegetablesMallServer.pojo.AccountLogin;
 import com.FruitsVegetablesMallServer.pojo.AdminList;
 import com.FruitsVegetablesMallServer.pojo.BannerList;
 import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
+import com.FruitsVegetablesMallServer.pojo.UserList;
 import com.FruitsVegetablesMallServer.service.AccountLoginService;
 import com.FruitsVegetablesMallServer.service.AdminListService;
 import com.FruitsVegetablesMallServer.service.BannerListService;
 import com.FruitsVegetablesMallServer.service.GoodsDetailService;
+import com.FruitsVegetablesMallServer.service.UserListService;
 import com.FruitsVegetablesMallServer.util.TokenRequired;
 import com.FruitsVegetablesMallServer.util.TokenUtil;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +40,8 @@ public class ManageController {
 	private AccountLoginService accountLoginService;
 	@Autowired
 	private AdminListService adminListService;
+	@Autowired
+	private UserListService userListService;
 	@Autowired
 	private BannerListService bannerListService;
 	@Autowired
@@ -57,52 +61,6 @@ public class ManageController {
 		return null;
 	}
 	
-	@TokenRequired
-	@RequestMapping(value = "/manage/add/admin",method = RequestMethod.POST)
-	public String addAdminList(@RequestBody Map<String,String> data) {
-		accountLoginService.addAccountLogin(data.get("userName"),data.get("password"),data.get("type"));
-		adminListService.addUserList(data.get("userName"),data.get("type"),data.get("imageUrl"),data.get("mobile"),data.get("name"));
-		return "OK";
-	}
-	
-	@TokenRequired
-	@RequestMapping(value = "/manage/delete/admin/{id}",method = RequestMethod.DELETE)
-	public String deleteAdminList(@PathVariable(value="id") Integer id) {
-		adminListService.deleteAdminList(id);
-		return "OK";
-	}
-	
-	
-	@TokenRequired
-	@RequestMapping(value = "/manage/admin",method = RequestMethod.GET)
-	public Map<String,Object> queryAllAdminList(@RequestParam(value="userName") String userName,@RequestParam(value="type") String type
-			,@RequestParam(value="mobile") String mobile,@RequestParam(value="name") String name
-			,@RequestParam(value="current") int current,@RequestParam(value="pageSize") int pageSize) {
-		PageInfo<AdminList> pageInfo = adminListService.queryAllAdminList(userName, type, mobile, name, current, pageSize);
-		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("data", pageInfo.getList());
-		data.put("total", pageInfo.getTotal());
-		data.put("success", true);
-		data.put("pageSize", pageInfo.getPageSize());
-		data.put("current", pageInfo.getPageNum());
-		return data;
-	}
-	
-	@TokenRequired
-	@RequestMapping(value = "/manage",method = RequestMethod.GET)
-	public AdminList getAdminList() {
-		return adminListService.queryAdminList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
-	}
-	
-	@TokenRequired
-	@RequestMapping(value = "/manage/update/admin",method = RequestMethod.PUT)
-	public String updateAdminList(@RequestBody Map<String,String> data) {
-		accountLoginService.updateAccountLogin(data.get("userName"), data.get("password")==""?accountLoginService.queryUpdateAccountLogin(data.get("userName")).getPassword():data.get("password"), data.get("password"));
-		adminListService.updateAdminList(data.get("userName"),data.get("type"),data.get("imageUrl"),data.get("mobile")
-				,data.get("name"));
-		return "OK";
-	}
-
 	// 添加图片
 	@TokenRequired
 	@ResponseBody
@@ -133,6 +91,96 @@ public class ManageController {
 		}
 	}
 	
+	@TokenRequired
+	@RequestMapping(value = "/manage",method = RequestMethod.GET)
+	public AdminList getAdminList() {
+		return adminListService.queryAdminList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/add/admin",method = RequestMethod.POST)
+	public String addAdminList(@RequestBody Map<String,String> data) {
+		accountLoginService.addAccountLogin(data.get("userName"),data.get("password"),"admin");
+		adminListService.addAdminList(data.get("userName"),data.get("type"),data.get("imageUrl"),data.get("mobile"),data.get("name"));
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/delete/admin/{id}",method = RequestMethod.DELETE)
+	public String deleteAdminList(@PathVariable(value="id") Integer id) {
+		adminListService.deleteAdminList(id);
+		return "OK";
+	}
+	
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/admin",method = RequestMethod.GET)
+	public Map<String,Object> queryAllAdminList(@RequestParam(value="userName") String userName,@RequestParam(value="type") String type
+			,@RequestParam(value="mobile") String mobile,@RequestParam(value="name") String name
+			,@RequestParam(value="current") int current,@RequestParam(value="pageSize") int pageSize) {
+		PageInfo<AdminList> pageInfo = adminListService.queryAllAdminList(userName, type, mobile, name, current, pageSize);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("data", pageInfo.getList());
+		data.put("total", pageInfo.getTotal());
+		data.put("success", true);
+		data.put("pageSize", pageInfo.getPageSize());
+		data.put("current", pageInfo.getPageNum());
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/update/admin",method = RequestMethod.PUT)
+	public String updateAdminList(@RequestBody Map<String,String> data) {
+		accountLoginService.updateAccountLogin(data.get("userName"), data.get("password")==""?accountLoginService.queryUpdateAccountLogin(data.get("userName")).getPassword():data.get("password"), data.get("password"));
+		adminListService.updateAdminList(data.get("userName"),data.get("type"),data.get("imageUrl"),data.get("mobile")
+				,data.get("name"));
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/add/user",method = RequestMethod.POST)
+	public String addUserList(@RequestBody Map<String,String> data) {
+		accountLoginService.addAccountLogin(data.get("userName"),data.get("password"),"user");
+		userListService.addUserList(data.get("name"),data.get("mobile"),data.get("address"),data.get("userName")
+				,data.get("receivingPhone"));
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/delete/user/{id}",method = RequestMethod.DELETE)
+	public String deleteUserList(@PathVariable(value="id") Integer id) {
+		userListService.deleteUserList(id);
+		return "OK";
+	}
+	
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/user",method = RequestMethod.GET)
+	public Map<String,Object> queryAllUserList(@RequestParam(value="name") String name,@RequestParam(value="mobile") String mobile
+			,@RequestParam(value="address") String address,@RequestParam(value="userName") String userName
+			,@RequestParam(value="receivingPhone") String receivingPhone,@RequestParam(value="current") int current
+			,@RequestParam(value="pageSize") int pageSize) {
+		PageInfo<UserList> pageInfo = userListService.queryAllUserList(name,mobile,address,userName,receivingPhone,current,pageSize);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("data", pageInfo.getList());
+		data.put("total", pageInfo.getTotal());
+		data.put("success", true);
+		data.put("pageSize", pageInfo.getPageSize());
+		data.put("current", pageInfo.getPageNum());
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/update/user",method = RequestMethod.PUT)
+	public String updateUserList(@RequestBody Map<String,String> data) {
+		accountLoginService.updateAccountLogin(data.get("userName")
+				,data.get("password")==""?accountLoginService.queryUpdateAccountLogin(data.get("userName")).getPassword():data.get("password")
+				,data.get("password"));
+		userListService.updateUserList(data.get("name"),data.get("mobile"),data.get("address"),data.get("userName")
+				,data.get("receivingPhone"));
+		return "OK";
+	}
+
 	@TokenRequired
 	@RequestMapping(value = "/manage/add/banner",method = RequestMethod.POST)
 	public String addBannerList(@RequestBody Map<String,String> data) {

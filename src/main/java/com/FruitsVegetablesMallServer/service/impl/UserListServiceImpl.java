@@ -18,8 +18,8 @@ public class UserListServiceImpl implements UserListService{
 	private UserListMapper userListMapper;
 	
 	@Override
-	public void addUserList(String name, String mobile, String address, String userCode, String receivingPhone) {
-		userListMapper.addUserList(name, mobile, address, userCode, receivingPhone);
+	public void addUserList(String name, String mobile, String address, String userName, String receivingPhone) {
+		userListMapper.addUserList(name, mobile, address, userName, receivingPhone);
 	}
 
 	@Override
@@ -28,10 +28,10 @@ public class UserListServiceImpl implements UserListService{
 	}
 
 	@Override
-	public PageInfo<UserList> queryAllUserList(String name, String mobile, String address, String userCode,
+	public PageInfo<UserList> queryAllUserList(String name, String mobile, String address, String userName,
 			String receivingPhone, int current, int pageSize) {
 		PageHelper.startPage(current,pageSize);
-		List<UserList> list = userListMapper.queryAllUserList(name, mobile, address, userCode, receivingPhone);
+		List<UserList> list = userListMapper.queryAllUserList(name, mobile, address, userName, receivingPhone);
 		PageInfo<UserList> page = new PageInfo<UserList>(list);
 		return page;
 	}
@@ -42,9 +42,9 @@ public class UserListServiceImpl implements UserListService{
 	}
 
 	@Override
-	public void updateUserList(int id, String name, String mobile, String address, String userCode,
+	public void updateUserList(String userName, String name, String mobile, String address,
 			String receivingPhone) {
-		userListMapper.updateUserList(id, name, mobile, address, userCode, receivingPhone);
+		userListMapper.updateUserList(userName, name, mobile, address, receivingPhone);
 	}
 
 }

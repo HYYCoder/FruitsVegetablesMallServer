@@ -37,6 +37,8 @@ import com.github.pagehelper.PageInfo;
 public class ManageController {
 	
 	@Autowired
+	private HttpServletRequest httpServletRequest;
+	@Autowired
 	private AccountLoginService accountLoginService;
 	@Autowired
 	private AdminListService adminListService;
@@ -46,8 +48,6 @@ public class ManageController {
 	private BannerListService bannerListService;
 	@Autowired
 	private GoodsDetailService goodsDetailService;
-	@Autowired
-	private HttpServletRequest httpServletRequest;
 	
 	@RequestMapping(value = "/admin/login",method = RequestMethod.POST)
 	public Map<String, String> adminLogin(@RequestBody Map<String,String> data) {

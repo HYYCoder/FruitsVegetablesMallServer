@@ -32,7 +32,7 @@
     </select>
     
     <select id="queryUserList" resultType="com.FruitsVegetablesMallServer.pojo.UserList">
-        select * from userlist where userName=#{userName}
+        select * from userlist where userName = #{userName}
     </select>
  
  	<update id="updateUserList" parameterType="com.FruitsVegetablesMallServer.pojo.UserList">

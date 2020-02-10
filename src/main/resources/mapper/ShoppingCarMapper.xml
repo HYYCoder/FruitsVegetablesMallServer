@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.FruitsVegetablesMallServer.mapper.ShoppingCarMapper">
+ 
+ 	<insert id="addShoppingCar" parameterType="com.FruitsVegetablesMallServer.pojo.ShoppingCar" >
+        insert into shoppingcar (userId,goodsId,quantity) values(#{userId},#{goodsId},#{quantity})
+    </insert>
+ 
+ 	<delete id="deleteShoppingCar" parameterType="java.lang.Integer">
+		delete from shoppingcar where id = #{id}
+	</delete>
+ 
+ 	<select id="queryAllShoppingCar" resultType="com.FruitsVegetablesMallServer.pojo.ShoppingCar">
+        select * from shoppingcar 
+        <where>
+		    <if test="userId >= 0">
+		         and userId = #{userId}
+		  	</if>
+		  	<if test="goodsId >= 0">
+		         or goodsId = #{goodsId}
+		  	</if>
+		  	<if test="quantity >= 0">
+		         or quantity = #{quantity}
+		  	</if>
+		</where>
+    </select>
+    
+     <select id="queryUserShoppingCar" resultType="com.FruitsVegetablesMallServer.pojo.ShoppingCar">
+        select * from shoppingcar where userId = #{userId}
+    </select>
+    
+    <select id="queryShoppingCar" resultType="com.FruitsVegetablesMallServer.pojo.ShoppingCar">
+        select * from shoppingcar where id = #{id}
+    </select>
+ 
+ 	<update id="updateShoppingCar" parameterType="com.FruitsVegetablesMallServer.pojo.ShoppingCar">
+		Update shoppingcar set userId = #{userId},goodsId = #{goodsId},quantity = #{quantity} where id = #{id}
+	</update>
+ 
+</mapper>

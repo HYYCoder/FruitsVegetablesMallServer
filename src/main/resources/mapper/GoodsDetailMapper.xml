@@ -32,7 +32,7 @@
     </select>
     
     <select id="queryGoodsDetail" resultType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">
-        select * from goodsdetail where id=#{id}
+        select * from goodsdetail where id = #{id}
     </select>
  
  	<update id="updateGoodsDetail" parameterType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">

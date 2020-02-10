@@ -15,7 +15,7 @@
     </select>
     
     <select id="queryBannerList" resultType="com.FruitsVegetablesMallServer.pojo.BannerList">
-        select * from bannerlist where id=#{id}
+        select * from bannerlist where id = #{id}
     </select>
  
  	<update id="updateBannerList" parameterType="com.FruitsVegetablesMallServer.pojo.BannerList">

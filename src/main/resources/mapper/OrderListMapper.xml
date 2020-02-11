@@ -3,7 +3,7 @@
 <mapper namespace="com.FruitsVegetablesMallServer.mapper.OrderListMapper">
  
  	<insert id="addOrderList" parameterType="com.FruitsVegetablesMallServer.pojo.OrderList" >
-        insert into orderlist (code,date,details,amount,discountAmount,paidAmount,receiver,address,mobile,note,userId) values(#{code},#{date},#{details},#{amount},#{discountAmount},#{paidAmount},#{receiver},#{address},#{mobile},#{note},#{userId})
+        insert into orderlist (code,date,details,amount,discountAmount,paidAmount,receiver,address,mobile,note,userId,status) values(#{code},#{date},#{details},#{amount},#{discountAmount},#{paidAmount},#{receiver},#{address},#{mobile},#{note},#{userId},#{status})
     </insert>
  
  	<delete id="deleteOrderList" parameterType="java.lang.Integer">
@@ -24,9 +24,6 @@
 		  	</if>
 		  	<if test="amount >= 0">
 		         or amount = #{amount}
-		  	</if>
-		  	<if test="date >= 0">
-		         or date = #{date}
 		  	</if>
 		  	<if test="discountAmount >= 0">
 		         or discountAmount = #{discountAmount}
@@ -49,6 +46,9 @@
 		  	<if test="userId >= 0">
 		         or userId = #{userId}
 		  	</if>
+		  	<if test="status != ''">
+		         or status = #{status}
+		  	</if>
 		</where>
     </select>
     
@@ -61,7 +61,7 @@
     </select>
  
  	<update id="updateOrderList" parameterType="com.FruitsVegetablesMallServer.pojo.OrderList">
-		Update orderlist set code = #{code},date = #{date},details = #{details},amount = #{amount},discountAmount = #{discountAmount},paidAmount = #{paidAmount},receiver = #{receiver},address = #{address},mobile = #{mobile},note = #{note},userId = #{userId} where id = #{id}
+		Update orderlist set code = #{code},date = #{date},details = #{details},amount = #{amount},discountAmount = #{discountAmount},paidAmount = #{paidAmount},receiver = #{receiver},address = #{address},mobile = #{mobile},note = #{note},userId = #{userId},status = #{status} where id = #{id}
 	</update>
  
 </mapper>

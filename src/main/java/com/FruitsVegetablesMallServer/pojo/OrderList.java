@@ -13,6 +13,7 @@ public class OrderList {
     private String mobile;
     private String note;
     private int userId;
+    private String status;
     
 	public int getId() {
 		return id;
@@ -85,6 +86,12 @@ public class OrderList {
 	}
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
     
 }

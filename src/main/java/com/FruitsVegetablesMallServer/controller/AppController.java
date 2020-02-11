@@ -325,7 +325,7 @@ public class AppController {
 		paidAmount = amount - discountAmount;
 		orderListService.addOrderList(userList.getId()+new Date().toString(), new Date().toString()
 				, details, amount, discountAmount, paidAmount, userList.getReceivingPhone(), userList.getAddress()
-				, userList.getMobile(), requestBody.get("note").get(0), userList.getId());
+				, userList.getMobile(), requestBody.get("note").get(0), userList.getId(), "AWAITING_PAYMENT");
 		for(String item : requestBody.get("ids")) {
 			shoppingCarService.deleteShoppingCar(Integer.parseInt(item));
 		}

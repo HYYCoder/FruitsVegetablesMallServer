@@ -22,11 +22,13 @@ import com.FruitsVegetablesMallServer.pojo.AccountLogin;
 import com.FruitsVegetablesMallServer.pojo.AdminList;
 import com.FruitsVegetablesMallServer.pojo.BannerList;
 import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
+import com.FruitsVegetablesMallServer.pojo.OrderList;
 import com.FruitsVegetablesMallServer.pojo.UserList;
 import com.FruitsVegetablesMallServer.service.AccountLoginService;
 import com.FruitsVegetablesMallServer.service.AdminListService;
 import com.FruitsVegetablesMallServer.service.BannerListService;
 import com.FruitsVegetablesMallServer.service.GoodsDetailService;
+import com.FruitsVegetablesMallServer.service.OrderListService;
 import com.FruitsVegetablesMallServer.service.UserListService;
 import com.FruitsVegetablesMallServer.util.TokenRequired;
 import com.FruitsVegetablesMallServer.util.TokenUtil;
@@ -48,6 +50,8 @@ public class ManageController {
 	private BannerListService bannerListService;
 	@Autowired
 	private GoodsDetailService goodsDetailService;
+	@Autowired
+	private OrderListService orderListService;
 	
 	@RequestMapping(value = "/admin/login",method = RequestMethod.POST)
 	public Map<String, String> adminLogin(@RequestBody Map<String,String> data) {
@@ -248,8 +252,7 @@ public class ManageController {
 	public Map<String,Object> queryAllGoodsDetail(@RequestParam(value="categoryId") String categoryId
 			, @RequestParam(value="name") String name, @RequestParam(value="price") Double price
 			, @RequestParam(value="stock") Double stock, @RequestParam(value="reducedPrice") Double reducedPrice
-			, @RequestParam(value="current") int current
-			, @RequestParam(value="pageSize") int pageSize) {
+			, @RequestParam(value="current") int current, @RequestParam(value="pageSize") int pageSize) {
 		PageInfo<GoodsDetail> pageInfo= goodsDetailService.queryAllGoodsDetail(categoryId==""?-1:Integer.parseInt(categoryId)
 				,name,price==null?-1:price,stock==null?-1:stock,reducedPrice==null?-1:reducedPrice,current,pageSize);
 		Map<String,Object> data = new HashMap<String,Object>();
@@ -268,6 +271,55 @@ public class ManageController {
 				, goodsDetail.getName(), goodsDetail.getPrice(), goodsDetail.getStock(), goodsDetail.getSpecification()
 				, goodsDetail.getReducedPrice(), goodsDetail.getMinimunOrderQuantity(), goodsDetail.getMaximumOrderQuantity()
 				, goodsDetail.getMinimumIncrementQuantity(), goodsDetail.getDetail());
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/add/order",method = RequestMethod.POST)
+	public String addOrderList(@RequestBody Map<String,String> data) {
+		orderListService.addOrderList(data.get("code"), data.get("date"), data.get("details")
+				, Double.parseDouble(data.get("amount")), Double.parseDouble(data.get("discountAmount"))
+				, Double.parseDouble(data.get("paidAmount")), data.get("receiver"), data.get("address")
+				, data.get("mobile"), data.get("note"), Integer.parseInt(data.get("userId")), data.get("status"));
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/delete/order/{id}",method = RequestMethod.DELETE)
+	public String deleteOrderList(@PathVariable(value="id") Integer id) {
+		orderListService.deleteOrderList(id);
+		return "OK";
+	}
+	
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/order",method = RequestMethod.GET)
+	public Map<String,Object> queryAllOrderList(@RequestParam(value="code") String code
+			, @RequestParam(value="date") String date, @RequestParam(value="details") String details
+			, @RequestParam(value="amount") Double amount, @RequestParam(value="discountAmount") Double discountAmount
+			, @RequestParam(value="paidAmount") Double paidAmount, @RequestParam(value="receiver") String receiver
+			, @RequestParam(value="address") String address, @RequestParam(value="mobile") String mobile
+			, @RequestParam(value="note") String note, @RequestParam(value="userId") String userId
+			, @RequestParam(value="status") String status, @RequestParam(value="current") int current
+			, @RequestParam(value="pageSize") int pageSize) {
+		PageInfo<OrderList> pageInfo= orderListService.queryAllOrderList(code, date, details, amount==null?-1:amount
+				, discountAmount==null?-1:discountAmount, paidAmount==null?-1:paidAmount
+				, receiver, address, mobile, note, userId==""?-1:Integer.parseInt(userId), status, current, pageSize);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("data", pageInfo.getList());
+		data.put("total", pageInfo.getTotal());
+		data.put("success", true);
+		data.put("pageSize", pageInfo.getPageSize());
+		data.put("current", pageInfo.getPageNum());
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/update/order",method = RequestMethod.PUT)
+	public String updateOrderList(@RequestBody OrderList orderList) {
+		orderListService.updateOrderList(orderList.getId(), orderList.getCode(), orderList.getDate(), orderList.getDetails()
+				, orderList.getAmount(), orderList.getDiscountAmount(), orderList.getPaidAmount(), orderList.getReceiver()
+				, orderList.getAddress(), orderList.getMobile(), orderList.getNote(), orderList.getUserId(), orderList.getStatus());
 		return "OK";
 	}
 }

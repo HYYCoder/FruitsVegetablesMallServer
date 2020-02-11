@@ -10,17 +10,17 @@ import com.FruitsVegetablesMallServer.pojo.OrderList;
 public interface OrderListMapper {
 
 	void addOrderList(String code, String date, String details, double amount, double discountAmount, double paidAmount
-			, String receiver, String address, String mobile,String note, int userId);
+			, String receiver, String address, String mobile,String note, int userId, String status);
 	
 	void deleteOrderList(int id);
 	
 	List<OrderList> queryAllOrderList(String code, String date, String details, double amount, double discountAmount
-			, double paidAmount, String receiver, String address, String mobile,String note, int userId);
+			, double paidAmount, String receiver, String address, String mobile,String note, int userId, String status);
 	
 	OrderList queryCodeOrderList(String code);
 	
 	OrderList queryOrderList(int id);
 	
-	void updateOrderList(String code, String date, String details, double amount, double discountAmount, double paidAmount
-			, String receiver, String address, String mobile,String note, int userId);
+	void updateOrderList(int id, String code, String date, String details, double amount, double discountAmount, double paidAmount
+			, String receiver, String address, String mobile,String note, int userId, String status);
 }

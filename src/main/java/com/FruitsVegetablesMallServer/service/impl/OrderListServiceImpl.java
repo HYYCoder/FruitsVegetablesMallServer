@@ -19,9 +19,9 @@ public class OrderListServiceImpl implements OrderListService{
 	
 	@Override
 	public void addOrderList(String code, String date, String details, double amount, double discountAmount,
-			double paidAmount, String receiver, String address, String mobile, String note, int userId) {
+			double paidAmount, String receiver, String address, String mobile, String note, int userId, String status) {
 		orderListMapper.addOrderList(code, date, details, amount, discountAmount, paidAmount, receiver, address, mobile
-				, note, userId);
+				, note, userId, status);
 	}
 
 	@Override
@@ -32,10 +32,10 @@ public class OrderListServiceImpl implements OrderListService{
 	@Override
 	public PageInfo<OrderList> queryAllOrderList(String code, String date, String details, double amount,
 			double discountAmount, double paidAmount, String receiver, String address, String mobile, String note,
-			int userId, int current, int pageSize) {
+			int userId, String status, int current, int pageSize) {
 		PageHelper.startPage(current,pageSize);
 		List<OrderList> list = orderListMapper.queryAllOrderList(code, date, details, amount, discountAmount, paidAmount, receiver
-				, address, mobile, note, userId);
+				, address, mobile, note, userId, status);
 		PageInfo<OrderList> page = new PageInfo<OrderList>(list);
 		return page;
 	}
@@ -51,10 +51,10 @@ public class OrderListServiceImpl implements OrderListService{
 	}
 
 	@Override
-	public void updateOrderList(String code, String date, String details, double amount, double discountAmount,
-			double paidAmount, String receiver, String address, String mobile, String note, int userId) {
-		orderListMapper.updateOrderList(code, date, details, amount, discountAmount, paidAmount, receiver, address, mobile
-				, note, userId);
+	public void updateOrderList(int id, String code, String date, String details, double amount, double discountAmount,
+			double paidAmount, String receiver, String address, String mobile, String note, int userId, String status) {
+		orderListMapper.updateOrderList(id, code, date, details, amount, discountAmount, paidAmount, receiver, address, mobile
+				, note, userId, status);
 	}
 
 }

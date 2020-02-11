@@ -1,6 +1,7 @@
 package com.FruitsVegetablesMallServer.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import com.FruitsVegetablesMallServer.service.AccountLoginService;
 import com.FruitsVegetablesMallServer.service.BannerListService;
 import com.FruitsVegetablesMallServer.service.CategoryListService;
 import com.FruitsVegetablesMallServer.service.GoodsDetailService;
+import com.FruitsVegetablesMallServer.service.OrderListService;
 import com.FruitsVegetablesMallServer.service.ShoppingCarService;
 import com.FruitsVegetablesMallServer.service.UserListService;
 import com.FruitsVegetablesMallServer.util.TokenRequired;
@@ -47,6 +49,8 @@ public class AppController {
 	private CategoryListService categoryListService;
 	@Autowired
 	private ShoppingCarService shoppingCarService;
+	@Autowired
+	private OrderListService orderListService;
 	
 	@RequestMapping(value = "/login",method = RequestMethod.POST)
 	public Map<String, Object> userLogin(@RequestBody Map<String,String> requestBody) {
@@ -264,7 +268,7 @@ public class AppController {
 	}
 	
 	@TokenRequired
-	@RequestMapping(value = "/cart/settle",method = RequestMethod.PUT)
+	@RequestMapping(value = "/cart/settle",method = RequestMethod.POST)
 	public Map<String,Object> updateConfirmOrder(@RequestBody Map<String,List<Integer>> requestBody) {
 		double discountAmount = 0;
 		double amount = 0;
@@ -282,8 +286,8 @@ public class AppController {
 			cartItemsData.put("specification", goodsDetail.getSpecification());
 			cartItemsData.put("quantity", shoppingCarList.getQuantity());
 			cartItems.add(cartItemsData);
-			discountAmount += goodsDetail.getReducedPrice();
-			amount += goodsDetail.getPrice();
+			discountAmount += goodsDetail.getReducedPrice()*shoppingCarList.getQuantity();
+			amount += goodsDetail.getPrice()*shoppingCarList.getQuantity();
 		}
 		paidAmount = amount - discountAmount;
 		Map<String,Object> list = new HashMap<String,Object>();
@@ -295,6 +299,42 @@ public class AppController {
 		list.put("cartItems", cartItems);
 		list.put("gifts", new ArrayList<>());
 		list.put("coupons", new ArrayList<>());
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("code", "0");
+		data.put("message", "OK");
+		data.put("data", list);
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/orders",method = RequestMethod.PUT)
+	public Map<String,Object> addOrdersList(@RequestBody Map<String,List<String>> requestBody) {
+		double discountAmount = 0;
+		double amount = 0;
+		double paidAmount = 0;
+		String details = "";
+		UserList userList = userListService.queryUserList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
+		for(String item : requestBody.get("ids")) {
+			ShoppingCar shoppingCarList = shoppingCarService.queryShoppingCar(Integer.parseInt(item));
+			GoodsDetail goodsDetail = goodsDetailService.queryGoodsDetail(shoppingCarList.getGoodsId());
+			details += ",";
+			details += shoppingCarList.getGoodsId();
+			discountAmount += goodsDetail.getReducedPrice()*shoppingCarList.getQuantity();
+			amount += goodsDetail.getPrice()*shoppingCarList.getQuantity();
+		}
+		paidAmount = amount - discountAmount;
+		orderListService.addOrderList(userList.getId()+new Date().toString(), new Date().toString()
+				, details, amount, discountAmount, paidAmount, userList.getReceivingPhone(), userList.getAddress()
+				, userList.getMobile(), requestBody.get("note").get(0), userList.getId());
+		for(String item : requestBody.get("ids")) {
+			shoppingCarService.deleteShoppingCar(Integer.parseInt(item));
+		}
+		Map<String,Object> list = new HashMap<String,Object>();
+		list.put("id", orderListService.queryCodeOrderList(userList.getId()+new Date().toString()).getId());
+		list.put("code", userList.getId()+new Date().toString());
+		list.put("receiver", userList.getReceivingPhone());
+		list.put("address", userList.getAddress());
+		list.put("amount", amount);
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");

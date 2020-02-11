@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.FruitsVegetablesMallServer.mapper.OrderListMapper">
+ 
+ 	<insert id="addOrderList" parameterType="com.FruitsVegetablesMallServer.pojo.OrderList" >
+        insert into orderlist (code,date,details,amount,discountAmount,paidAmount,receiver,address,mobile,note,userId) values(#{code},#{date},#{details},#{amount},#{discountAmount},#{paidAmount},#{receiver},#{address},#{mobile},#{note},#{userId})
+    </insert>
+ 
+ 	<delete id="deleteOrderList" parameterType="java.lang.Integer">
+		delete from orderlist where id = #{id}
+	</delete>
+ 
+ 	<select id="queryAllOrderList" resultType="com.FruitsVegetablesMallServer.pojo.OrderList">
+        select * from orderlist 
+        <where>
+		    <if test="code != ''">
+		         and code = #{code}
+		  	</if>
+		  	<if test="date != ''">
+		         or date = #{date}
+		  	</if>
+		  	<if test="details != ''">
+		         or details = #{details}
+		  	</if>
+		  	<if test="amount >= 0">
+		         or amount = #{amount}
+		  	</if>
+		  	<if test="date >= 0">
+		         or date = #{date}
+		  	</if>
+		  	<if test="discountAmount >= 0">
+		         or discountAmount = #{discountAmount}
+		  	</if>
+		  	<if test="paidAmount >= 0">
+		         or paidAmount = #{paidAmount}
+		  	</if>
+			<if test="receiver != ''">
+		         or receiver = #{receiver}
+		  	</if>
+		  	<if test="address != ''">
+		         or address = #{address}
+		  	</if>
+		  	<if test="mobile != ''">
+		         or mobile = #{mobile}
+		  	</if>
+		  	<if test="note != ''">
+		         or note = #{note}
+		  	</if>
+		  	<if test="userId >= 0">
+		         or userId = #{userId}
+		  	</if>
+		</where>
+    </select>
+    
+    <select id="queryCodeOrderList" resultType="com.FruitsVegetablesMallServer.pojo.OrderList">
+        select * from orderlist where code = #{code}
+    </select>
+    
+    <select id="queryOrderList" resultType="com.FruitsVegetablesMallServer.pojo.OrderList">
+        select * from orderlist where id = #{id}
+    </select>
+ 
+ 	<update id="updateOrderList" parameterType="com.FruitsVegetablesMallServer.pojo.OrderList">
+		Update orderlist set code = #{code},date = #{date},details = #{details},amount = #{amount},discountAmount = #{discountAmount},paidAmount = #{paidAmount},receiver = #{receiver},address = #{address},mobile = #{mobile},note = #{note},userId = #{userId} where id = #{id}
+	</update>
+ 
+</mapper>

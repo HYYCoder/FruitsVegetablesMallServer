@@ -3,11 +3,11 @@
 <mapper namespace="com.FruitsVegetablesMallServer.mapper.CategoryListMapper">
 
     <select id="queryAllCategoryList" resultType="com.FruitsVegetablesMallServer.pojo.CategoryBean">
-        select * from categorylist order by orders
+        select * from category order by orders
     </select>
     
     <select id="queryAllSubCategoriesList" resultType="com.FruitsVegetablesMallServer.pojo.SubCategoriesBean">
-        select * from subcategorieslist order by orders
+        select * from subcategories order by orders
     </select>
     
 </mapper>

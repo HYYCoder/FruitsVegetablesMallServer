@@ -41,7 +41,7 @@ public class ShoppingCarServiceImpl implements ShoppingCarService{
 	}
 
 	@Override
-	public List<ShoppingCar> queryGoodsShoppingCar(int goodsId) {
+	public ShoppingCar queryGoodsShoppingCar(int goodsId) {
 		return shoppingCarMapper.queryGoodsShoppingCar(goodsId);
 	}
 	

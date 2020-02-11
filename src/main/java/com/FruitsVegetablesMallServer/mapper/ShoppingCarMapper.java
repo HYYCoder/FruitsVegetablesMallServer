@@ -17,7 +17,7 @@ public interface ShoppingCarMapper {
 	
 	List<ShoppingCar> queryUserShoppingCar(int userId);
 	
-	List<ShoppingCar> queryGoodsShoppingCar(int goodsId);
+	ShoppingCar queryGoodsShoppingCar(int goodsId);
 	
 	ShoppingCar queryShoppingCar(int id);
 	

@@ -140,14 +140,15 @@ public class AppController {
 	@RequestMapping(value = "/cart/items",method = RequestMethod.POST)
 	public Map<String,Object> addShoppingCar(@RequestBody Map<String,String> requestBody) {
 		UserList userList = userListService.queryUserList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
-		List<ShoppingCar> shoppingCar = shoppingCarService.queryGoodsShoppingCar(Integer.parseInt(requestBody.get("goodsId")));
-		if(shoppingCar.size() > 1) {
-			shoppingCarService.updateShoppingCar(shoppingCar.get(0).getId(), shoppingCar.get(0).getUserId()
-					, shoppingCar.get(0).getGoodsId()
-					, shoppingCar.get(0).getQuantity()+Double.parseDouble(requestBody.get("quantity")));
-		}else {
+		ShoppingCar shoppingCar = shoppingCarService.queryGoodsShoppingCar(Integer.parseInt(requestBody.get("goodsId")));
+		if(shoppingCar == null) {
 			shoppingCarService.addShoppingCar(
 					userList.getId(), Integer.parseInt(requestBody.get("goodsId")), Double.parseDouble(requestBody.get("quantity")));
+		}else {
+			
+			shoppingCarService.updateShoppingCar(shoppingCar.getId(), shoppingCar.getUserId()
+					, shoppingCar.getGoodsId()
+					, shoppingCar.getQuantity()+Double.parseDouble(requestBody.get("quantity")));
 		}
 		Map<String,Object> count = new HashMap<String,Object>();
 		count.put("count", shoppingCarService.queryUserShoppingCar(

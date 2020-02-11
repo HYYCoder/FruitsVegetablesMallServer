@@ -29,6 +29,10 @@
         select * from shoppingcar where userId = #{userId}
     </select>
     
+    <select id="queryGoodsShoppingCar" resultType="com.FruitsVegetablesMallServer.pojo.ShoppingCar">
+        select * from shoppingcar where goodsId = #{goodsId}
+    </select>
+    
     <select id="queryShoppingCar" resultType="com.FruitsVegetablesMallServer.pojo.ShoppingCar">
         select * from shoppingcar where id = #{id}
     </select>

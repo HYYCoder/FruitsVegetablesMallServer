@@ -15,6 +15,8 @@ public interface ShoppingCarService {
 	
 	List<ShoppingCar> queryUserShoppingCar(int userId);
 	
+	List<ShoppingCar> queryGoodsShoppingCar(int goodsId);
+	
 	ShoppingCar queryShoppingCar(int id);
 	
 	void updateShoppingCar(int id, int userId, int goodsId, Double quantity);

@@ -114,15 +114,15 @@ public class AppController {
 	
 	@TokenRequired
 	@RequestMapping(value = "/goods",method = RequestMethod.GET)
-	public Map<String,Object> queryAllGoodsDetail(@RequestParam(value="categoryId") String categoryId,@RequestParam(value="name") String name
-			,@RequestParam(value="price") Double price,@RequestParam(value="stock") Double stock
-			,@RequestParam(value="reducedPrice") Double reducedPrice,@RequestParam(value="current") int current
-			,@RequestParam(value="pageSize") int pageSize) {
+	public Map<String,Object> queryAllGoodsDetail(@RequestParam(value="categoryId") String categoryId
+			, @RequestParam(value="name") String name, @RequestParam(value="price") Double price
+			, @RequestParam(value="stock") Double stock, @RequestParam(value="reducedPrice") Double reducedPrice
+			, @RequestParam(value="current") int current, @RequestParam(value="pageSize") int pageSize) {
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");
-		data.put("data", goodsDetailService.queryAllGoodsDetail(categoryId==""?-1:Integer.parseInt(categoryId),name,price==null?-1:price,
-				stock==null?-1:stock,reducedPrice==null?-1:reducedPrice,current,pageSize).getList());
+		data.put("data", goodsDetailService.queryAllGoodsDetail(categoryId==""?-1:Integer.parseInt(categoryId), name
+				, price==null?-1:price, stock==null?-1:stock, reducedPrice==null?-1:reducedPrice, current, pageSize).getList());
 		return data;
 	}
 	
@@ -139,10 +139,19 @@ public class AppController {
 	@TokenRequired
 	@RequestMapping(value = "/cart/items",method = RequestMethod.POST)
 	public Map<String,Object> addShoppingCar(@RequestBody Map<String,String> requestBody) {
-		shoppingCarService.addShoppingCar(Integer.parseInt(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId())
-				, Integer.parseInt(requestBody.get("goodsId")), Double.parseDouble(requestBody.get("quantity")));
+		UserList userList = userListService.queryUserList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
+		List<ShoppingCar> shoppingCar = shoppingCarService.queryGoodsShoppingCar(Integer.parseInt(requestBody.get("goodsId")));
+		if(shoppingCar.size() > 1) {
+			shoppingCarService.updateShoppingCar(shoppingCar.get(0).getId(), shoppingCar.get(0).getUserId()
+					, shoppingCar.get(0).getGoodsId()
+					, shoppingCar.get(0).getQuantity()+Double.parseDouble(requestBody.get("quantity")));
+		}else {
+			shoppingCarService.addShoppingCar(
+					userList.getId(), Integer.parseInt(requestBody.get("goodsId")), Double.parseDouble(requestBody.get("quantity")));
+		}
 		Map<String,Object> count = new HashMap<String,Object>();
-		count.put("count", shoppingCarService.queryUserShoppingCar(Integer.parseInt(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId())).size());
+		count.put("count", shoppingCarService.queryUserShoppingCar(
+				Integer.parseInt(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId())).size());
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");
@@ -152,26 +161,37 @@ public class AppController {
 	
 	@TokenRequired
 	@RequestMapping(value = "/cart/item/{id}",method = RequestMethod.DELETE)
-	public String deleteShoppingCarItem(@PathVariable(value="id") Integer id) {
+	public Map<String,Object> deleteShoppingCarItem(@PathVariable(value="id") Integer id) {
 		shoppingCarService.deleteShoppingCar(id);
-		return "OK";
+		Map<String,Object> list = new HashMap<String,Object>();
+		list.put("result", "ok");
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("code", "0");
+		data.put("message", "OK");
+		data.put("data", list);
+		return data;
 	}
 	
 	@TokenRequired
 	@RequestMapping(value = "/cart/items/bacthdel",method = RequestMethod.POST)
-	public String deleteShoppingCarItems(@RequestBody Map<String,String> requestBody) {
-		char[] ids = requestBody.get("ids").toCharArray();
-		for(char id : ids){
+	public Map<String,Object> deleteShoppingCarItems(@RequestBody Map<String,List<Integer>> requestBody) {
+		for(int id : requestBody.get("ids")){
 			shoppingCarService.deleteShoppingCar(id);
 		}
-		return "OK";
+		Map<String,Object> list = new HashMap<String,Object>();
+		list.put("result", "ok");
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("code", "0");
+		data.put("message", "OK");
+		data.put("data", list);
+		return data;
 	}
 	
 	@TokenRequired
 	@RequestMapping(value = "/cart",method = RequestMethod.GET)
 	public Map<String,Object> queryAllShoppingCarList(@RequestParam(value="userId") int userId
-			,@RequestParam(value="goodsId") int goodsId,@RequestParam(value="quantity") Double quantity
-			,@RequestParam(value="current") int current,@RequestParam(value="pageSize") int pageSize) {
+			, @RequestParam(value="goodsId") int goodsId, @RequestParam(value="quantity") Double quantity
+			, @RequestParam(value="current") int current, @RequestParam(value="pageSize") int pageSize) {
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");
@@ -182,24 +202,30 @@ public class AppController {
 	@TokenRequired
 	@RequestMapping(value = "/cart/items",method = RequestMethod.GET)
 	public Map<String,Object> queryUserShoppingCarList() {
-		List<Object> list = new ArrayList<Object>();
-		List<ShoppingCar> shoppingCarList = shoppingCarService.queryUserShoppingCar(Integer.parseInt(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId()));
-		for(ShoppingCar item:shoppingCarList) {
+		List<Object> normalItems = new ArrayList<Object>();
+		List<Object> abnormalItems = new ArrayList<Object>();
+		UserList userList = userListService.queryUserList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
+		List<ShoppingCar> shoppingCarList = shoppingCarService.queryUserShoppingCar(userList.getId());
+		for(ShoppingCar item : shoppingCarList) {
 			GoodsDetail goodsDetail = goodsDetailService.queryGoodsDetail(item.getGoodsId());
-			Map<String,Object> itemData = new HashMap<String,Object>();
-			itemData.put("id", goodsDetail.getId());
-			itemData.put("imageUrls", goodsDetail.getImageUrls());
-			itemData.put("name", goodsDetail.getName());
-			itemData.put("price", goodsDetail.getPrice());
-			itemData.put("stock", goodsDetail.getStock());
-			itemData.put("specification", goodsDetail.getSpecification());
-			itemData.put("minimunOrderQuantity", goodsDetail.getMinimunOrderQuantity());
-			itemData.put("maximumOrderQuantity", goodsDetail.getMaximumOrderQuantity());
-			itemData.put("minimumIncrementQuantity", goodsDetail.getMinimumIncrementQuantity());
-			itemData.put("quantitys", item.getQuantity());
-			itemData.put("isCheckeds", true);
-			list.add(itemData);
+			Map<String,Object> normalItemsData = new HashMap<String,Object>();
+			normalItemsData.put("id", goodsDetail.getId());
+			normalItemsData.put("shoppingCarId", item.getId());
+			normalItemsData.put("imageUrls", goodsDetail.getImageUrls());
+			normalItemsData.put("name", goodsDetail.getName());
+			normalItemsData.put("price", goodsDetail.getPrice());
+			normalItemsData.put("stock", goodsDetail.getStock());
+			normalItemsData.put("specification", goodsDetail.getSpecification());
+			normalItemsData.put("minimunOrderQuantity", goodsDetail.getMinimunOrderQuantity());
+			normalItemsData.put("maximumOrderQuantity", goodsDetail.getMaximumOrderQuantity());
+			normalItemsData.put("minimumIncrementQuantity", goodsDetail.getMinimumIncrementQuantity());
+			normalItemsData.put("quantity", item.getQuantity());
+			normalItemsData.put("isChecked", true);
+			normalItems.add(normalItemsData);
 		}
+		Map<String,Object> list = new HashMap<String,Object>();
+		list.put("normalItems", normalItems);
+		list.put("abnormalItems", abnormalItems);
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");
@@ -211,7 +237,8 @@ public class AppController {
 	@RequestMapping(value = "/cart/items/count",method = RequestMethod.GET)
 	public Map<String,Object> queryShoppingCarCount() {
 		Map<String,Object> count = new HashMap<String,Object>();
-		count.put("count", shoppingCarService.queryUserShoppingCar(Integer.parseInt(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId())).size());
+		count.put("count", shoppingCarService.queryUserShoppingCar(
+				Integer.parseInt(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId())).size());
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");
@@ -221,13 +248,56 @@ public class AppController {
 	
 	@TokenRequired
 	@RequestMapping(value = "/cart/item/{id}",method = RequestMethod.PUT)
-	public Map<String,Object> updateShoppingCarCount(@PathVariable(value="id") Integer id, @RequestBody Map<String,String> requestBody) {
-		shoppingCarService.updateShoppingCar(id, Integer.parseInt(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId())
-				, shoppingCarService.queryShoppingCar(id).getGoodsId(), Double.parseDouble(requestBody.get("quantity")));
+	public Map<String,Object> updateShoppingCarCount(@PathVariable(value="id") Integer id
+			, @RequestBody Map<String,String> requestBody) {
+		UserList userList = userListService.queryUserList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
+		shoppingCarService.updateShoppingCar(id, userList.getId(), shoppingCarService.queryShoppingCar(id).getGoodsId()
+				, Double.parseDouble(requestBody.get("quantity")));
+		Map<String,Object> list = new HashMap<String,Object>();
+		list.put("result", "ok");
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");
-		data.put("data", shoppingCarService.queryUserShoppingCar(Integer.parseInt(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId())));
+		data.put("data", list);
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/cart/settle",method = RequestMethod.PUT)
+	public Map<String,Object> updateConfirmOrder(@RequestBody Map<String,List<Integer>> requestBody) {
+		double discountAmount = 0;
+		double amount = 0;
+		double paidAmount = 0;
+		List<Object> cartItems = new ArrayList<Object>();
+		UserList userList = userListService.queryUserList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
+		for(int item : requestBody.get("ids")) {
+			ShoppingCar shoppingCarList = shoppingCarService.queryShoppingCar(item);
+			GoodsDetail goodsDetail = goodsDetailService.queryGoodsDetail(shoppingCarList.getGoodsId());
+			Map<String,Object> cartItemsData = new HashMap<String,Object>();
+			cartItemsData.put("id", goodsDetail.getId());
+			cartItemsData.put("imageUrls", goodsDetail.getImageUrls());
+			cartItemsData.put("name", goodsDetail.getName());
+			cartItemsData.put("price", goodsDetail.getPrice());
+			cartItemsData.put("specification", goodsDetail.getSpecification());
+			cartItemsData.put("quantity", shoppingCarList.getQuantity());
+			cartItems.add(cartItemsData);
+			discountAmount += goodsDetail.getReducedPrice();
+			amount += goodsDetail.getPrice();
+		}
+		paidAmount = amount - discountAmount;
+		Map<String,Object> list = new HashMap<String,Object>();
+		list.put("mobile", userList.getMobile());
+		list.put("address", userList.getAddress());
+		list.put("discountAmount", discountAmount);
+		list.put("amount", amount);
+		list.put("paidAmount", paidAmount);
+		list.put("cartItems", cartItems);
+		list.put("gifts", new ArrayList<>());
+		list.put("coupons", new ArrayList<>());
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("code", "0");
+		data.put("message", "OK");
+		data.put("data", list);
 		return data;
 	}
 }

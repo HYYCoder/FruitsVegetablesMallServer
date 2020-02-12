@@ -1,5 +1,6 @@
 package com.FruitsVegetablesMallServer.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.FruitsVegetablesMallServer.pojo.AccountLogin;
 import com.FruitsVegetablesMallServer.pojo.CategoryBean;
 import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
+import com.FruitsVegetablesMallServer.pojo.OrderList;
 import com.FruitsVegetablesMallServer.pojo.ShoppingCar;
 import com.FruitsVegetablesMallServer.pojo.SubCategoriesBean;
 import com.FruitsVegetablesMallServer.pojo.UserList;
@@ -31,6 +33,7 @@ import com.FruitsVegetablesMallServer.service.ShoppingCarService;
 import com.FruitsVegetablesMallServer.service.UserListService;
 import com.FruitsVegetablesMallServer.util.TokenRequired;
 import com.FruitsVegetablesMallServer.util.TokenUtil;
+import com.github.pagehelper.PageInfo;
 
 @RestController
 public class AppController {
@@ -313,17 +316,18 @@ public class AppController {
 		double amount = 0;
 		double paidAmount = 0;
 		String details = "";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ssZ");
 		UserList userList = userListService.queryUserList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
 		for(String item : requestBody.get("ids")) {
 			ShoppingCar shoppingCarList = shoppingCarService.queryShoppingCar(Integer.parseInt(item));
 			GoodsDetail goodsDetail = goodsDetailService.queryGoodsDetail(shoppingCarList.getGoodsId());
-			details += ",";
+			details += "&&";
 			details += shoppingCarList.getGoodsId();
 			discountAmount += goodsDetail.getReducedPrice()*shoppingCarList.getQuantity();
 			amount += goodsDetail.getPrice()*shoppingCarList.getQuantity();
 		}
 		paidAmount = amount - discountAmount;
-		orderListService.addOrderList(userList.getId()+new Date().toString(), new Date().toString()
+		orderListService.addOrderList(userList.getId()+new Date().toString(), simpleDateFormat.format(new Date())
 				, details, amount, discountAmount, paidAmount, userList.getReceivingPhone(), userList.getAddress()
 				, userList.getMobile(), requestBody.get("note").get(0), userList.getId(), "AWAITING_PAYMENT");
 		for(String item : requestBody.get("ids")) {
@@ -335,6 +339,39 @@ public class AppController {
 		list.put("receiver", userList.getReceivingPhone());
 		list.put("address", userList.getAddress());
 		list.put("amount", amount);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("code", "0");
+		data.put("message", "OK");
+		data.put("data", list);
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/orders",method = RequestMethod.GET)
+	public Map<String,Object> queryAllOrderList(@RequestParam(value="status") String status, @RequestParam(value="current") int current
+			, @RequestParam(value="pageSize") int pageSize) {
+		PageInfo<OrderList> pageInfo= orderListService.queryAllOrderList("", "", "", -1, -1, -1, "", "", "", ""
+				, -1, status, current, pageSize);
+		List<Object> list = new ArrayList<Object>();
+		for(OrderList orderList : pageInfo.getList()) {
+			int count = 0;
+			List<String> imageUrls = new ArrayList<>();
+			for(String id : orderList.getDetails().split("&&")) {
+				if(!id.equals("")) {
+					imageUrls.add(goodsDetailService.queryGoodsDetail(Integer.parseInt(id)).getImageUrls().split("&&")[1]);
+					count += 1;
+				}
+			}
+			Map<String,Object> item = new HashMap<String,Object>();
+			item.put("id", orderList.getId());
+			item.put("code", orderList.getCode());
+			item.put("data", orderList.getDate());
+			item.put("count", count);
+			item.put("status", orderList.getStatus());
+			item.put("payAmount", orderList.getPaidAmount());
+			item.put("imageUrls", imageUrls);
+			list.add(item);
+		}
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");

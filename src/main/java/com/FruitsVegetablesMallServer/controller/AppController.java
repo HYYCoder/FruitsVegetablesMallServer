@@ -323,6 +323,8 @@ public class AppController {
 			GoodsDetail goodsDetail = goodsDetailService.queryGoodsDetail(shoppingCarList.getGoodsId());
 			details += "&&";
 			details += shoppingCarList.getGoodsId();
+			details += ",";
+			details += shoppingCarList.getQuantity();
 			discountAmount += goodsDetail.getReducedPrice()*shoppingCarList.getQuantity();
 			amount += goodsDetail.getPrice()*shoppingCarList.getQuantity();
 		}
@@ -357,8 +359,8 @@ public class AppController {
 			int count = 0;
 			List<String> imageUrls = new ArrayList<>();
 			for(String id : orderList.getDetails().split("&&")) {
-				if(!id.equals("")) {
-					imageUrls.add(goodsDetailService.queryGoodsDetail(Integer.parseInt(id)).getImageUrls().split("&&")[1]);
+				if(!id.split(",")[0].equals("")) {
+					imageUrls.add(goodsDetailService.queryGoodsDetail(Integer.parseInt(id.split(",")[0])).getImageUrls().split("&&")[1]);
 					count += 1;
 				}
 			}
@@ -372,6 +374,44 @@ public class AppController {
 			item.put("imageUrls", imageUrls);
 			list.add(item);
 		}
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("code", "0");
+		data.put("message", "OK");
+		data.put("data", list);
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/order/{id}",method = RequestMethod.GET)
+	public Map<String,Object> queryOrderList(@PathVariable(value="id") Integer id) {
+		System.out.println(id);
+		OrderList orderList= orderListService.queryOrderList(id);
+		List<Object> item = new ArrayList<Object>();
+		for(String goodsIdAndCound : orderList.getDetails().split("&&")) {
+			if(!goodsIdAndCound.equals("")) {
+				GoodsDetail goodsDetail = goodsDetailService.queryGoodsDetail(Integer.parseInt(goodsIdAndCound.split(",")[0]));
+				Map<String,Object> goodsList = new HashMap<String,Object>();
+				goodsList.put("id", goodsDetail.getId());
+				goodsList.put("quantity", Integer.parseInt(goodsIdAndCound.split(",")[1]));
+				goodsList.put("name", goodsDetail.getName());
+				goodsList.put("imageUrl", goodsDetail.getImageUrls());
+				goodsList.put("price", goodsDetail.getPrice());
+				goodsList.put("type", "GOODS");
+			}
+		}
+		Map<String,Object> list = new HashMap<String,Object>();
+		list.put("id", orderList.getId());
+		list.put("code", orderList.getCode());
+		list.put("data", orderList.getDate());
+		list.put("amount", orderList.getAmount());
+		list.put("paidAmount", orderList.getPaidAmount());
+		list.put("receiver", orderList.getReceiver());
+		list.put("address", orderList.getPaidAmount());
+		list.put("mobile", orderList.getMobile());
+		list.put("status", orderList.getStatus());
+		list.put("note", orderList.getStatus());
+		list.put("note", orderList.getStatus());
+		list.put("details", item);
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");

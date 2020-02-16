@@ -316,7 +316,7 @@ public class AppController {
 		double amount = 0;
 		double paidAmount = 0;
 		String details = "";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ssZ");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		UserList userList = userListService.queryUserList(TokenUtil.parseJWT(httpServletRequest.getHeader("Authorization")).getId());
 		for(String item : requestBody.get("ids")) {
 			ShoppingCar shoppingCarList = shoppingCarService.queryShoppingCar(Integer.parseInt(item));
@@ -384,7 +384,6 @@ public class AppController {
 	@TokenRequired
 	@RequestMapping(value = "/order/{id}",method = RequestMethod.GET)
 	public Map<String,Object> queryOrderList(@PathVariable(value="id") Integer id) {
-		System.out.println(id);
 		OrderList orderList= orderListService.queryOrderList(id);
 		List<Object> item = new ArrayList<Object>();
 		for(String goodsIdAndCound : orderList.getDetails().split("&&")) {
@@ -392,7 +391,7 @@ public class AppController {
 				GoodsDetail goodsDetail = goodsDetailService.queryGoodsDetail(Integer.parseInt(goodsIdAndCound.split(",")[0]));
 				Map<String,Object> goodsList = new HashMap<String,Object>();
 				goodsList.put("id", goodsDetail.getId());
-				goodsList.put("quantity", Integer.parseInt(goodsIdAndCound.split(",")[1]));
+				goodsList.put("quantity", Double.parseDouble(goodsIdAndCound.split(",")[1]));
 				goodsList.put("name", goodsDetail.getName());
 				goodsList.put("imageUrl", goodsDetail.getImageUrls());
 				goodsList.put("price", goodsDetail.getPrice());
@@ -412,6 +411,22 @@ public class AppController {
 		list.put("note", orderList.getStatus());
 		list.put("note", orderList.getStatus());
 		list.put("details", item);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("code", "0");
+		data.put("message", "OK");
+		data.put("data", list);
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/order/{id}",method = RequestMethod.PUT)
+	public Map<String,Object> updateOrderList(@PathVariable(value="id") Integer id, @RequestBody Map<String,String> requestBody) {
+		OrderList orderList= orderListService.queryOrderList(id);
+		orderListService.updateOrderList(id, orderList.getCode(), orderList.getDate(), orderList.getDetails()
+				, orderList.getAmount(), orderList.getDiscountAmount(), orderList.getPaidAmount(), orderList.getReceiver()
+				, orderList.getAddress(), orderList.getMobile(), orderList.getNote(), orderList.getUserId(), requestBody.get("status"));
+		Map<String,Object> list = new HashMap<String,Object>();
+		list.put("result", "OK");
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");

@@ -186,7 +186,7 @@ public class ManageController {
 		accountLoginService.updateAccountLogin(data.get("userName")
 				, data.get("password")==""?accountLoginService.queryUpdateAccountLogin(data.get("userName")).getPassword()
 				:data.get("password"), data.get("password"));
-		userListService.updateUserList(data.get("name"), data.get("mobile"), data.get("address"), data.get("userName")
+		userListService.updateUserList(data.get("userName"),data.get("name"), data.get("mobile"), data.get("address")
 				,data.get("receivingPhone"));
 		return "OK";
 	}

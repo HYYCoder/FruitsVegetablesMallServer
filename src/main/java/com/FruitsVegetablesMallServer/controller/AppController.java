@@ -82,6 +82,36 @@ public class AppController {
 		return null;
 	}
 	
+	@RequestMapping(value = "/register",method = RequestMethod.POST)
+	public Map<String, Object> userRegister(@RequestBody Map<String,String> requestBody) {
+		AccountLogin isAccountLogin = accountLoginService.queryAccountLogin(requestBody.get("userName"), requestBody.get("password")
+				,"user");
+		if(isAccountLogin == null) {
+			accountLoginService.addAccountLogin(requestBody.get("userName"), requestBody.get("password"),"user");
+			userListService.addUserList(requestBody.get("userName"), requestBody.get("mobile"), requestBody.get("address")
+					, requestBody.get("userName"), requestBody.get("receivingPhone"));
+			UserList userList = userListService.queryUserList(requestBody.get("userName"));
+			Map<String, Object> user = new HashMap<String,Object>();
+			user.put("id",userList.getId());
+			user.put("name",userList.getName());
+			user.put("mobile",userList.getMobile());
+			user.put("address",userList.getAddress());
+			user.put("clientType","0");
+			user.put("token",TokenUtil.createJwtToken(userList.getUserName(),"FruitsVegetablesMall"));
+			user.put("isBoundMobile","true");
+			user.put("clientCode","0");
+			user.put("clientId","0");
+			user.put("userName",userList.getUserName());
+			user.put("receivingPhone",userList.getReceivingPhone());
+			Map<String,Object> data = new HashMap<String,Object>();
+			data.put("code", "0");
+			data.put("message", "OK");
+			data.put("data", user);
+			return data;
+		}
+		return null;
+	}
+	
 	@TokenRequired
 	@RequestMapping(value = "/specialoffers",method = RequestMethod.GET)
 	public Map<String,Object> queryAllBannerList(@RequestParam(value="current") int current

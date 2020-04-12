@@ -53,12 +53,26 @@ public class ManageController {
 	@Autowired
 	private OrderListService orderListService;
 	
-	@RequestMapping(value = "/admin/login",method = RequestMethod.POST)
+	@RequestMapping(value = "/manage/admin/login",method = RequestMethod.POST)
 	public Map<String, String> adminLogin(@RequestBody Map<String,String> data) {
 		AccountLogin isAccountLogin = accountLoginService.queryAccountLogin(data.get("userName"), data.get("password"),"admin");
 		if(isAccountLogin.getUserName() !=null && isAccountLogin.getPassword() !=null && isAccountLogin.getType() != "admin") {
 			Map<String, String> token = new HashMap<String,String>();
 			token.put("id",isAccountLogin.getId()+"");
+			token.put("token",TokenUtil.createJwtToken(data.get("userName"),"FruitsVegetablesMall"));
+			return token;
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "/manage/admin/register",method = RequestMethod.POST)
+	public Map<String, String> adminRegister(@RequestBody Map<String,String> data) {
+		AccountLogin isAccountLogin = accountLoginService.queryAccountLogin(data.get("userName"), data.get("password"),"admin");
+		if(isAccountLogin == null) {
+			accountLoginService.addAccountLogin(data.get("userName"), data.get("password"),"admin");
+			adminListService.addAdminList(data.get("userName"), "admin", data.get("imageUrl"), data.get("mobile"), data.get("name"));
+			Map<String, String> token = new HashMap<String,String>();
+			token.put("id",accountLoginService.queryAccountLogin(data.get("userName"), data.get("password"),"admin").getId()+"");
 			token.put("token",TokenUtil.createJwtToken(data.get("userName"),"FruitsVegetablesMall"));
 			return token;
 		}

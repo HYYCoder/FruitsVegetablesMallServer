@@ -182,6 +182,10 @@ public class AppController {
 			shoppingCarService.addShoppingCar(
 					userList.getId(), Integer.parseInt(requestBody.get("goodsId")), Double.parseDouble(requestBody.get("quantity")));
 		}else {
+			double quantitys;
+			if(shoppingCar.getQuantity()+Double.parseDouble(requestBody.get("quantity"))<=goodsDetailService.queryGoodsDetail(Integer.parseInt(requestBody.get("goodsId"))).getMaximumOrderQuantity()) {
+				quantitys = shoppingCar.getQuantity()+Double.parseDouble(requestBody.get("quantity"));
+			}
 			
 			shoppingCarService.updateShoppingCar(shoppingCar.getId(), shoppingCar.getUserId()
 					, shoppingCar.getGoodsId()

@@ -70,7 +70,7 @@ public class ManageController {
 		AccountLogin isAccountLogin = accountLoginService.queryAccountLogin(data.get("userName"), data.get("password"),"admin");
 		if(isAccountLogin == null) {
 			accountLoginService.addAccountLogin(data.get("userName"), data.get("password"),"admin");
-			adminListService.addAdminList(data.get("userName"), "admin", data.get("imageUrl"), data.get("mobile"), data.get("name"));
+			adminListService.addAdminList(data.get("userName"), "admin", "", data.get("mobile"), data.get("name"));
 			Map<String, String> token = new HashMap<String,String>();
 			token.put("id",accountLoginService.queryAccountLogin(data.get("userName"), data.get("password"),"admin").getId()+"");
 			token.put("token",TokenUtil.createJwtToken(data.get("userName"),"FruitsVegetablesMall"));

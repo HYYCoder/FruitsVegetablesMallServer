@@ -198,8 +198,8 @@ public class ManageController {
 	@RequestMapping(value = "/manage/update/user",method = RequestMethod.PUT)
 	public String updateUserList(@RequestBody Map<String,String> data) {
 		accountLoginService.updateAccountLogin(data.get("userName")
-				, data.get("password")==""?accountLoginService.queryUpdateAccountLogin(data.get("userName")).getPassword()
-				:data.get("password"), data.get("password"));
+				, data.get("password")==null||data.get("password")==""?accountLoginService.queryUpdateAccountLogin(data.get("userName")).getPassword()
+				:data.get("password"), "user");
 		userListService.updateUserList(data.get("userName"),data.get("name"), data.get("mobile"), data.get("address")
 				,data.get("receivingPhone"));
 		return "OK";

@@ -183,13 +183,16 @@ public class AppController {
 					userList.getId(), Integer.parseInt(requestBody.get("goodsId")), Double.parseDouble(requestBody.get("quantity")));
 		}else {
 			double quantitys;
-			if(shoppingCar.getQuantity()+Double.parseDouble(requestBody.get("quantity"))<=goodsDetailService.queryGoodsDetail(Integer.parseInt(requestBody.get("goodsId"))).getMaximumOrderQuantity()) {
+			double stock = goodsDetailService.queryGoodsDetail(Integer.parseInt(requestBody.get("goodsId"))).getStock();
+			if(shoppingCar.getQuantity()+Double.parseDouble(requestBody.get("quantity"))<=stock) {
 				quantitys = shoppingCar.getQuantity()+Double.parseDouble(requestBody.get("quantity"));
+			}else {
+				quantitys = stock;
 			}
 			
 			shoppingCarService.updateShoppingCar(shoppingCar.getId(), shoppingCar.getUserId()
 					, shoppingCar.getGoodsId()
-					, shoppingCar.getQuantity()+Double.parseDouble(requestBody.get("quantity")));
+					, quantitys);
 		}
 		Map<String,Object> count = new HashMap<String,Object>();
 		count.put("count", shoppingCarService.queryUserShoppingCar(

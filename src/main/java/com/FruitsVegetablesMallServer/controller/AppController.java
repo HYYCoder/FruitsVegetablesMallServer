@@ -433,6 +433,7 @@ public class AppController {
 				goodsList.put("imageUrl", goodsDetail.getImageUrls());
 				goodsList.put("price", goodsDetail.getPrice());
 				goodsList.put("type", "GOODS");
+				item.add(goodsList);
 			}
 		}
 		Map<String,Object> list = new HashMap<String,Object>();

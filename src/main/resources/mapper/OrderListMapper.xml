@@ -11,7 +11,7 @@
 	</delete>
  
  	<select id="queryAllOrderList" resultType="com.FruitsVegetablesMallServer.pojo.OrderList">
-        select * from orderlist 
+        select * from orderlist order by id desc
         <where>
 		    <if test="code != ''">
 		         and code = #{code}

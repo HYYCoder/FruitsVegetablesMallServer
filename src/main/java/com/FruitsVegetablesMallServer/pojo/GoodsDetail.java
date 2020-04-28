@@ -13,7 +13,7 @@ public class GoodsDetail {
 	private Double maximumOrderQuantity;
 	private Double minimumIncrementQuantity;
 	private String detail;
-	
+	private String hotGoods;
 	
 	public int getId() {
 		return id;
@@ -86,6 +86,12 @@ public class GoodsDetail {
 	}
 	public void setDetail(String detail) {
 		this.detail = detail;
+	}
+	public String getHotGoods() {
+		return hotGoods;
+	}
+	public void setHotGoods(String hotGoods) {
+		this.hotGoods = hotGoods;
 	}
 	
 	

@@ -21,12 +21,15 @@ import org.springframework.web.multipart.MultipartFile;
 import com.FruitsVegetablesMallServer.pojo.AccountLogin;
 import com.FruitsVegetablesMallServer.pojo.AdminList;
 import com.FruitsVegetablesMallServer.pojo.BannerList;
+import com.FruitsVegetablesMallServer.pojo.CategoryBean;
 import com.FruitsVegetablesMallServer.pojo.GoodsDetail;
 import com.FruitsVegetablesMallServer.pojo.OrderList;
+import com.FruitsVegetablesMallServer.pojo.SubCategoriesBean;
 import com.FruitsVegetablesMallServer.pojo.UserList;
 import com.FruitsVegetablesMallServer.service.AccountLoginService;
 import com.FruitsVegetablesMallServer.service.AdminListService;
 import com.FruitsVegetablesMallServer.service.BannerListService;
+import com.FruitsVegetablesMallServer.service.CategoryListService;
 import com.FruitsVegetablesMallServer.service.GoodsDetailService;
 import com.FruitsVegetablesMallServer.service.OrderListService;
 import com.FruitsVegetablesMallServer.service.UserListService;
@@ -52,6 +55,8 @@ public class ManageController {
 	private GoodsDetailService goodsDetailService;
 	@Autowired
 	private OrderListService orderListService;
+	@Autowired
+	private CategoryListService categoryListService;
 	
 	@RequestMapping(value = "/manage/admin/login",method = RequestMethod.POST)
 	public Map<String, String> adminLogin(@RequestBody Map<String,String> data) {
@@ -249,7 +254,7 @@ public class ManageController {
 				, Double.parseDouble(data.get("price")), Double.parseDouble(data.get("stock")),data.get("specification")
 				, Double.parseDouble(data.get("reducedPrice")), Double.parseDouble(data.get("minimunOrderQuantity"))
 				, Double.parseDouble(data.get("maximumOrderQuantity")), Double.parseDouble(data.get("minimumIncrementQuantity"))
-				, data.get("detail"));
+				, data.get("detail"), data.get("hotGoods"));
 		return "OK";
 	}
 	
@@ -266,9 +271,11 @@ public class ManageController {
 	public Map<String,Object> queryAllGoodsDetail(@RequestParam(value="categoryId") String categoryId
 			, @RequestParam(value="name") String name, @RequestParam(value="price") Double price
 			, @RequestParam(value="stock") Double stock, @RequestParam(value="reducedPrice") Double reducedPrice
+			, @RequestParam(value="hotGoods") String hotGoods
 			, @RequestParam(value="current") int current, @RequestParam(value="pageSize") int pageSize) {
 		PageInfo<GoodsDetail> pageInfo= goodsDetailService.queryAllGoodsDetail(categoryId==""?-1:Integer.parseInt(categoryId)
-				,name,price==null?-1:price,stock==null?-1:stock,reducedPrice==null?-1:reducedPrice,current,pageSize);
+				, name, price==null?-1:price, stock==null?-1:stock, reducedPrice==null?-1:reducedPrice, hotGoods
+						, current, pageSize);
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("data", pageInfo.getList());
 		data.put("total", pageInfo.getTotal());
@@ -284,7 +291,7 @@ public class ManageController {
 		goodsDetailService.updateGoodsDetail(goodsDetail.getId(), goodsDetail.getImageUrls(), goodsDetail.getCategoryId()
 				, goodsDetail.getName(), goodsDetail.getPrice(), goodsDetail.getStock(), goodsDetail.getSpecification()
 				, goodsDetail.getReducedPrice(), goodsDetail.getMinimunOrderQuantity(), goodsDetail.getMaximumOrderQuantity()
-				, goodsDetail.getMinimumIncrementQuantity(), goodsDetail.getDetail());
+				, goodsDetail.getMinimumIncrementQuantity(), goodsDetail.getDetail(), goodsDetail.getHotGoods());
 		return "OK";
 	}
 	
@@ -334,6 +341,84 @@ public class ManageController {
 		orderListService.updateOrderList(orderList.getId(), orderList.getCode(), orderList.getDate(), orderList.getDetails()
 				, orderList.getAmount(), orderList.getDiscountAmount(), orderList.getPaidAmount(), orderList.getReceiver()
 				, orderList.getAddress(), orderList.getMobile(), orderList.getNote(), orderList.getUserId(), orderList.getStatus());
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/add/category",method = RequestMethod.POST)
+	public String addCategoryList(@RequestBody Map<String,String> data) {
+		categoryListService.addCategoryList(Integer.parseInt(data.get("orders")), data.get("name"), data.get("imageUrl"));
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/delete/category/{id}",method = RequestMethod.DELETE)
+	public String deleteCategoryList(@PathVariable(value="id") Integer id) {
+		categoryListService.deleteCategoryList(id);
+		return "OK";
+	}
+	
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/category",method = RequestMethod.GET)
+	public Map<String,Object> queryCategoryList(@RequestParam(value="orders") int orders,@RequestParam(value="name") String name
+			,@RequestParam(value="imageUrl") String imageUrl,@RequestParam(value="current") int current
+			,@RequestParam(value="pageSize") int pageSize) {
+		PageInfo<CategoryBean> pageInfo = categoryListService.queryCategoryList(orders, name, imageUrl,current,pageSize);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("data", pageInfo.getList());
+		data.put("total", pageInfo.getTotal());
+		data.put("success", true);
+		data.put("pageSize", pageInfo.getPageSize());
+		data.put("current", pageInfo.getPageNum());
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/update/category",method = RequestMethod.PUT)
+	public String updateCategoryList(@RequestBody Map<String,String> data) {
+		categoryListService.updateCategoryList(Integer.parseInt(data.get("id")),Integer.parseInt(data.get("orders"))
+				,data.get("name"),data.get("imageUrl"));
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/add/subcategory",method = RequestMethod.POST)
+	public String addSubCategoryList(@RequestBody Map<String,String> data) {
+		categoryListService.addSubCategoryList(Integer.parseInt(data.get("pid")), Integer.parseInt(data.get("orders"))
+				, data.get("name"));
+		return "OK";
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/delete/subcategory/{id}",method = RequestMethod.DELETE)
+	public String deleteSubCategoryList(@PathVariable(value="id") Integer id) {
+		categoryListService.deleteSubCategoryList(id);
+		return "OK";
+	}
+	
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/subcategory",method = RequestMethod.GET)
+	public Map<String,Object> querySubCategoriesList(@RequestParam(value="pid") int pid
+			,@RequestParam(value="orders") int orders
+			,@RequestParam(value="name") String name,@RequestParam(value="current") int current
+			,@RequestParam(value="pageSize") int pageSize) {
+		PageInfo<SubCategoriesBean> pageInfo = categoryListService.querySubCategoriesList(pid,orders,name,current,pageSize);
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("data", pageInfo.getList());
+		data.put("total", pageInfo.getTotal());
+		data.put("success", true);
+		data.put("pageSize", pageInfo.getPageSize());
+		data.put("current", pageInfo.getPageNum());
+		return data;
+	}
+	
+	@TokenRequired
+	@RequestMapping(value = "/manage/update/subcategory",method = RequestMethod.PUT)
+	public String updateSubCategoryList(@RequestBody Map<String,String> data) {
+		categoryListService.updateSubCategoryList(Integer.parseInt(data.get("id")),Integer.parseInt(data.get("pid"))
+				,Integer.parseInt(data.get("orders")),data.get("name"));
 		return "OK";
 	}
 }

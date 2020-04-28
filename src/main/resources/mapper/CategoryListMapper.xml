@@ -2,12 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.FruitsVegetablesMallServer.mapper.CategoryListMapper">
 
+
+ 	<insert id="addCategoryList" parameterType="com.FruitsVegetablesMallServer.pojo.CategoryBean" >
+        insert into category (orders,name,imageUrl) values(#{orders},#{name},#{imageUrl})
+    </insert>
+ 
+ 	<delete id="deleteCategoryList" parameterType="java.lang.Integer">
+		delete from category where id = #{id}
+	</delete>
+ 
+ 	<select id="queryCategoryList" resultType="com.FruitsVegetablesMallServer.pojo.CategoryBean">
+        select * from category
+         <where>
+		    <if test="orders >= 0">
+		         and orders = #{orders}
+		  	</if>
+		  	<if test="name != ''">
+		         or name like'%${name}%'
+		  	</if>
+			<if test="imageUrl != ''">
+		         or imageUrl like'%${imageUrl}%'
+		  	</if>
+		</where>
+		order by orders
+    </select>
+    
     <select id="queryAllCategoryList" resultType="com.FruitsVegetablesMallServer.pojo.CategoryBean">
         select * from category order by orders
+    </select>
+    
+ 	<update id="updateCategoryList" parameterType="com.FruitsVegetablesMallServer.pojo.CategoryBean">
+		Update category set orders = #{orders},name = #{name},imageUrl = #{imageUrl} where id = #{id}
+	</update>
+
+     <insert id="addSubCategoryList" parameterType="com.FruitsVegetablesMallServer.pojo.SubCategoriesBean" >
+        insert into subcategories (pid,orders,name) values(#{pid},#{orders},#{name})
+    </insert>
+ 
+ 	<delete id="deleteSubCategoryList" parameterType="java.lang.Integer">
+		delete from subcategories where id = #{id}
+	</delete>
+ 
+ 	<select id="querySubCategoriesList" resultType="com.FruitsVegetablesMallServer.pojo.SubCategoriesBean">
+        select * from subcategories
+		 <where>
+		    <if test="pid >= 0">
+		         and pid = #{pid}
+		  	</if>
+		  	<if test="orders >= 0">
+		         or orders = #{orders}
+		  	</if>
+			<if test="name != ''">
+		         or name like'%${name}%'
+		  	</if>
+		</where>
+		order by orders
     </select>
     
     <select id="queryAllSubCategoriesList" resultType="com.FruitsVegetablesMallServer.pojo.SubCategoriesBean">
         select * from subcategories order by orders
     </select>
+    
+     <update id="updateSubCategoryList" parameterType="com.FruitsVegetablesMallServer.pojo.SubCategoriesBean">
+		Update subcategories set pid = #{pid},orders = #{orders},name = #{name} where id = #{id}
+	</update>
     
 </mapper>

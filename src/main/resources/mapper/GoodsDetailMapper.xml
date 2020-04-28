@@ -3,7 +3,7 @@
 <mapper namespace="com.FruitsVegetablesMallServer.mapper.GoodsDetailMapper">
  
  	<insert id="addGoodsDetail" parameterType="com.FruitsVegetablesMallServer.pojo.GoodsDetail" >
-        insert into goodsdetail (imageUrls,categoryId,name,price,stock,specification,reducedPrice,minimunOrderQuantity,maximumOrderQuantity,minimumIncrementQuantity,detail) values(#{imageUrls},#{categoryId},#{name},#{price},#{stock},#{specification},#{reducedPrice},#{minimunOrderQuantity},#{maximumOrderQuantity},#{minimumIncrementQuantity},#{detail})
+        insert into goodsdetail (imageUrls,categoryId,name,price,stock,specification,reducedPrice,minimunOrderQuantity,maximumOrderQuantity,minimumIncrementQuantity,detail,hotGoods) values(#{imageUrls},#{categoryId},#{name},#{price},#{stock},#{specification},#{reducedPrice},#{minimunOrderQuantity},#{maximumOrderQuantity},#{minimumIncrementQuantity},#{detail},#{hotGoods})
     </insert>
  
  	<delete id="deleteGoodsDetail" parameterType="java.lang.Integer">
@@ -28,6 +28,9 @@
 		  	<if test="reducedPrice >= 0">
 		         or reducedPrice = #{reducedPrice}
 		  	</if>
+		  	<if test="hotGoods != ''">
+		         or hotGoods = #{hotGoods}
+		  	</if>
 		</where>
     </select>
     
@@ -36,7 +39,7 @@
     </select>
  
  	<update id="updateGoodsDetail" parameterType="com.FruitsVegetablesMallServer.pojo.GoodsDetail">
-		Update goodsdetail set imageUrls = #{imageUrls},categoryId = #{categoryId},name = #{name},price = #{price},stock = #{stock},specification = #{specification},reducedPrice = #{reducedPrice},minimunOrderQuantity = #{minimunOrderQuantity},maximumOrderQuantity = #{maximumOrderQuantity},minimumIncrementQuantity = #{minimumIncrementQuantity},detail = #{detail} where id = #{id}
+		Update goodsdetail set imageUrls = #{imageUrls},categoryId = #{categoryId},name = #{name},price = #{price},stock = #{stock},specification = #{specification},reducedPrice = #{reducedPrice},minimunOrderQuantity = #{minimunOrderQuantity},maximumOrderQuantity = #{maximumOrderQuantity},minimumIncrementQuantity = #{minimumIncrementQuantity},detail = #{detail},hotGoods = #{hotGoods} where id = #{id}
 	</update>
  
 </mapper>

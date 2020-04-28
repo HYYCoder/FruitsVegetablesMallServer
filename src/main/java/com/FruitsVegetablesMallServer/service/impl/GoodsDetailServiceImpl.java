@@ -20,9 +20,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	@Override
 	public void addGoodsDetail(String imageUrls, int categoryId, String name, double price, double stock, String specification
 			, double reducedPrice, double minimunOrderQuantity, double maximumOrderQuantity, double minimumIncrementQuantity
-			, String detail) {
+			, String detail,String hotGoods) {
 		goodsDetailMapper.addGoodsDetail(imageUrls, categoryId, name, price, stock, specification, reducedPrice, minimunOrderQuantity
-				, maximumOrderQuantity, minimumIncrementQuantity, detail);
+				, maximumOrderQuantity, minimumIncrementQuantity, detail, hotGoods);
 	}
 
 	@Override
@@ -32,10 +32,10 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 
 	@Override
 	public PageInfo<GoodsDetail> queryAllGoodsDetail(int categoryId, String name, double price
-			, double stock, double reducedPrice, int current, int pageSize) {
+			, double stock, double reducedPrice,String hotGoods, int current, int pageSize) {
 		PageHelper.startPage(current,pageSize);
 		List<GoodsDetail> list = goodsDetailMapper.queryAllGoodsDetail(categoryId, name, price
-				, stock, reducedPrice);
+				, stock, reducedPrice, hotGoods);
 		PageInfo<GoodsDetail> page = new PageInfo<GoodsDetail>(list);
 		return page;
 	}
@@ -48,9 +48,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService{
 	@Override
 	public void updateGoodsDetail(int id, String imageUrls, int categoryId, String name, double price, double stock
 			, String specification, double reducedPrice, double minimunOrderQuantity, double maximumOrderQuantity
-			, double minimumIncrementQuantity, String detail) {
+			, double minimumIncrementQuantity, String detail,String hotGoods) {
 		goodsDetailMapper.updateGoodsDetail(id, imageUrls, categoryId, name, price, stock, specification, reducedPrice
-				, minimunOrderQuantity, maximumOrderQuantity, minimumIncrementQuantity, detail);
+				, minimunOrderQuantity, maximumOrderQuantity, minimumIncrementQuantity, detail, hotGoods);
 	}
 
 }

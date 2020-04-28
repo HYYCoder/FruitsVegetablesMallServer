@@ -11,7 +11,7 @@
 	</delete>
  
  	<select id="queryAllOrderList" resultType="com.FruitsVegetablesMallServer.pojo.OrderList">
-        select * from orderlist order by id desc
+        select * from orderlist
         <where>
 		    <if test="code != ''">
 		         and code = #{code}
@@ -50,6 +50,7 @@
 		         or status = #{status}
 		  	</if>
 		</where>
+		 order by id desc
     </select>
     
     <select id="queryCodeOrderList" resultType="com.FruitsVegetablesMallServer.pojo.OrderList">

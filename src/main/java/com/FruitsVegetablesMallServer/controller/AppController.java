@@ -442,14 +442,15 @@ public class AppController {
 		list.put("id", orderList.getId());
 		list.put("code", orderList.getCode());
 		list.put("data", orderList.getDate());
+		list.put("details", item);
 		list.put("amount", orderList.getAmount());
+		list.put("discountAmount", orderList.getDiscountAmount());
 		list.put("paidAmount", orderList.getPaidAmount());
 		list.put("receiver", orderList.getReceiver());
 		list.put("address", orderList.getPaidAmount());
 		list.put("mobile", orderList.getMobile());
-		list.put("status", orderList.getStatus());
 		list.put("note", orderList.getNote());
-		list.put("details", item);
+		list.put("status", orderList.getStatus());
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");
 		data.put("message", "OK");

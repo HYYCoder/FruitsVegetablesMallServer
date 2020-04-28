@@ -448,8 +448,7 @@ public class AppController {
 		list.put("address", orderList.getPaidAmount());
 		list.put("mobile", orderList.getMobile());
 		list.put("status", orderList.getStatus());
-		list.put("note", orderList.getStatus());
-		list.put("note", orderList.getStatus());
+		list.put("note", orderList.getNote());
 		list.put("details", item);
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("code", "0");

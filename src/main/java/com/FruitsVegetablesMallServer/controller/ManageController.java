@@ -94,7 +94,8 @@ public class ManageController {
 		// 如果文件内容不为空，则写入上传路径
 		if (!file.isEmpty()) {
 			// 上传文件路径
-			String path = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static/images/goods/";
+			File directory = new File("."); 
+			String path = directory.getAbsolutePath() + "images/";
 			System.out.println("文件名称" + file.getOriginalFilename());
 			// 上传文件名
 			String filename = file.getOriginalFilename();

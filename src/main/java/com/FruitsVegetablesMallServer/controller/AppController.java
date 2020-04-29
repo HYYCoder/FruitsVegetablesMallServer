@@ -447,7 +447,7 @@ public class AppController {
 		list.put("discountAmount", orderList.getDiscountAmount());
 		list.put("paidAmount", orderList.getPaidAmount());
 		list.put("receiver", orderList.getReceiver());
-		list.put("address", orderList.getPaidAmount());
+		list.put("address", orderList.getAddress());
 		list.put("mobile", orderList.getMobile());
 		list.put("note", orderList.getNote());
 		list.put("status", orderList.getStatus());

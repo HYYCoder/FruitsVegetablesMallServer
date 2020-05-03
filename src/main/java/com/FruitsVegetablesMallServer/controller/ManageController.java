@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -108,7 +107,9 @@ public class ManageController {
 
 			// 将上传文件保存到一个目标文档中
 			File file1 = new File(path + File.separator + filename);
-			file.transferTo(file1);
+			if(!file1.exists()) {
+				file.transferTo(file1);
+	        }
 			return filename;
 		} else {
 			return null;

@@ -18,7 +18,7 @@
         select * from accountlogin where userName = #{userName}
     </select>
     
-     <update id="updateAccountLogin" parameterType="com.FruitsVegetablesMallServer.pojo.AccountLogin">
+    <update id="updateAccountLogin" parameterType="com.FruitsVegetablesMallServer.pojo.AccountLogin">
 		Update accountlogin set password = #{password},type = #{type} where userName = #{userName}
 	</update>
 	

@@ -266,8 +266,7 @@ public class ManageController {
 		goodsDetailService.deleteGoodsDetail(id);
 		return "OK";
 	}
-	
-	
+		
 	@TokenRequired
 	@RequestMapping(value = "/manage/goods",method = RequestMethod.GET)
 	public Map<String,Object> queryAllGoodsDetail(@RequestParam(value="categoryId") String categoryId
@@ -313,8 +312,7 @@ public class ManageController {
 		orderListService.deleteOrderList(id);
 		return "OK";
 	}
-	
-	
+		
 	@TokenRequired
 	@RequestMapping(value = "/manage/order",method = RequestMethod.GET)
 	public Map<String,Object> queryAllOrderList(@RequestParam(value="code") String code
@@ -398,8 +396,7 @@ public class ManageController {
 		categoryListService.deleteSubCategoryList(id);
 		return "OK";
 	}
-	
-	
+		
 	@TokenRequired
 	@RequestMapping(value = "/manage/subcategory",method = RequestMethod.GET)
 	public Map<String,Object> querySubCategoriesList(@RequestParam(value="pid") int pid
